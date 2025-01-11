@@ -2,10 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def parse_coordinates(input_str):
-    """
-    Manually parse a string of coordinates into a list of tuples.
-    Input format: "(1, 2), (3, 4), (5, 6)"
-    """
     try:
         # Remove whitespace and split into individual coordinate strings
         input_str = input_str.strip()
@@ -28,16 +24,10 @@ def parse_coordinates(input_str):
 
 
 def omega_function(x, x1, x2, y1, y2, n30):
-    """
-    Compute the Omega function.
-    """
     return (y2 - y1) / 2 * np.sin(np.pi * (x - x2 - n30) / (x2 - x1)) + (y1 + y2) / 2
 
 
 def newton_raphson_n30(x1, x2, y1, y2, max_iterations=30, tolerance=1e-10):
-    """
-    Compute n30 using the Newton-Raphson method.
-    """
     def f(n):
         return (y2 - y1) / 2 * np.sin(np.pi * n / (x2 - x1)) + (y1 + y2) / 2 - y1
 
@@ -57,9 +47,6 @@ def newton_raphson_n30(x1, x2, y1, y2, max_iterations=30, tolerance=1e-10):
 
 
 def interpolate_and_plot(points):
-    """
-    Interpolate the curve and plot the graph.
-    """
     points = sorted(points, key=lambda p: p[0])  # Ensure points are sorted by x-coordinate
     x_values = np.linspace(points[0][0], points[-1][0], 1000)  # Fine-grained x-axis for plotting
     y_values = []
@@ -89,9 +76,6 @@ def interpolate_and_plot(points):
 
 
 def main():
-    """
-    Main program to read input, process data, and generate the graph.
-    """
     try:
         input_str = input("Provide a list of coordinates (e.g., (1, 2), (3, 4), (5, 6)): ")
         points = parse_coordinates(input_str)
