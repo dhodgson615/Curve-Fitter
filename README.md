@@ -44,7 +44,7 @@ Below you’ll find a plain-language walk-through of **why** you might pick sine
 
 5. **Solve for amplitude and shift**  
    Plugging $x_1$ and $x_2$ into $f$ gives two linear equations:  
-   $ A + C = y_2, \quad -A + C = y_1. $  
+   $A + C = y_2, \quad -A + C = y_1.$  
    Adding and subtracting yields  
    $ A = \frac{y_2 - y_1}{2}, \qquad C = \frac{y_1 + y_2}{2}. $
 
