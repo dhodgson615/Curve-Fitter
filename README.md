@@ -26,7 +26,7 @@ Below you’ll find a plain-language walk-through of **why** you might pick sine
 
 1. **Define the problem**  
    Given two points  
-   $ P_1 = (x_1,\,y_1), \qquad P_2 = (x_2,\,y_2) \quad \text{with } x_2 > x_1, $  
+   $P_1 = (x_1,\,y_1), \qquad P_2 = (x_2,\,y_2) \quad \text{with } x_2 > x_1$,  
    we want a function $f(x)$ that  
    * passes through both points and  
    * has zero slope at each point.
