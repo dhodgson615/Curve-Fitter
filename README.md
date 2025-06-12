@@ -26,46 +26,34 @@ Below you’ll find a plain-language walk-through of **why** you might pick sine
 
 1. **Define the problem**  
    Given two points  
-   \[
-   P_1 = (x_1,\,y_1), \qquad P_2 = (x_2,\,y_2) \quad \text{with } x_2 > x_1,
-   \]  
-   we want a function \(f(x)\) that  
+   $ P_1 = (x_1,\,y_1), \qquad P_2 = (x_2,\,y_2) \quad \text{with } x_2 > x_1, $  
+   we want a function $f(x)$ that  
    * passes through both points and  
    * has zero slope at each point.
 
 2. **Choose a model**  
    A shifted sine can do that:  
-   \[
-   f(x) = A \sin\bigl(\omega(x - \phi)\bigr) + C.
-   \]
+   $ f(x) = A \sin\bigl(\omega(x - \phi)\bigr) + C. $
 
 3. **Lock the frequency**  
    Exactly half a period must fit between the x-coordinates, so  
-   \[
-   \omega = \dfrac{\pi}{x_2 - x_1}.
-   \]
+   $ \omega = \dfrac{\pi}{x_2 - x_1}. $
 
 4. **Enforce zero slopes**  
-   The derivative \(f'(x) = A\omega\cos(\ldots)\) vanishes when the cosine is \(\pm 1\).  That means the sine must start at \(-\frac{\pi}{2}\) and end at \(+\frac{\pi}{2}\).  Translating this into a phase offset introduces a single unknown, call it \(n\).
+   The derivative $f'(x) = A\omega\cos(\ldots)$ vanishes when the cosine is $\pm 1$.  That means the sine must start at $-\frac{\pi}{2}$ and end at $+\frac{\pi}{2}$.  Translating this into a phase offset introduces a single unknown, call it $n$.
 
 5. **Solve for amplitude and shift**  
-   Plugging \(x_1\) and \(x_2\) into \(f\) gives two linear equations:  
-   \[
-   A + C = y_2, \quad -A + C = y_1.
-   \]  
+   Plugging $x_1$ and $x_2$ into $f$ gives two linear equations:  
+   $ A + C = y_2, \quad -A + C = y_1. $  
    Adding and subtracting yields  
-   \[
-   A = \frac{y_2 - y_1}{2}, \qquad C = \frac{y_1 + y_2}{2}.
-   \]
+   $ A = \frac{y_2 - y_1}{2}, \qquad C = \frac{y_1 + y_2}{2}. $
 
 6. **Collect the pieces**  
    The half-sine segment finally reads  
-   \[
-   f(x) \;=\; \frac{y_2 - y_1}{2}\,
+   $ f(x) \;=\; \frac{y_2 - y_1}{2}\,
               \sin\!\Bigl(\pi\,\frac{x - x_2 - n}{x_2 - x_1}\Bigr)
-            + \frac{y_1 + y_2}{2},
-   \]  
-   with \(n\) picked so that \(f(x_1) = y_1\).  The closed-form value is \(-\frac{x_2 - x_1}{2}\), but in the code you’ll see Newton–Raphson used instead.  That iterative form is more flexible once you start experimenting with non-standard easing profiles.
+            + \frac{y_1 + y_2}{2}, $  
+   with $n$ picked so that $f(x_1) = y_1$.  The closed-form value is $-\frac{x_2 - x_1}{2}$, but in the code you’ll see Newton–Raphson used instead.  That iterative form is more flexible once you start experimenting with non-standard easing profiles.
 
 ---
 
@@ -78,7 +66,7 @@ Below you’ll find a plain-language walk-through of **why** you might pick sine
    Direct transcription of the half-sine formula above.
 
 3. **`newton_raphson`**  
-   Finds the phase offset `n` by solving \(f(x_1) - y_1 = 0\).  Thirty iterations with a tight tolerance give machine-precision roots and fall back gracefully if the derivative ever hits zero.
+   Finds the phase offset `n` by solving $f(x_1) - y_1 = 0$.  Thirty iterations with a tight tolerance give machine-precision roots and fall back gracefully if the derivative ever hits zero.
 
 4. **`interpolate`**  
    * Sort the points by x.  
@@ -92,7 +80,7 @@ Below you’ll find a plain-language walk-through of **why** you might pick sine
 
 ## Extending the idea
 
-* **Custom slopes** Use different phase angles so the derivative at \(x_1\) or \(x_2\) matches a specified value instead of zero.  
+* **Custom slopes** Use different phase angles so the derivative at $x_1$ or $x_2$ matches a specified value instead of zero.  
 * **Variable easing length** Swap the hard-coded half-period for any fraction you like, then keep Newton–Raphson to solve for the new phase.  
 * **Higher dimensions** Feed the same scalars into every coordinate axis to bend paths in 3-D space.
 
@@ -101,5 +89,11 @@ Below you’ll find a plain-language walk-through of **why** you might pick sine
 ## Caveats
 
 * If two points share the same x-coordinate, the formula divides by zero—skip or pre-process such samples.  
-* When \(y_1 = y_2\) the amplitude vanishes; you might decide a straight horizontal segment is clearer than a “flat” sine.  
+* When $y_1 = y_2$ the amplitude vanishes; you might decide a straight horizontal segment is clearer than a “flat” sine.  
 * Every segment ends with zero velocity.  If you need momentum to carry across points, consider quarter-cosine pairs or cubic splines.
+
+---
+
+## Closing thought
+
+A half-period sine is tiny in concept yet mighty in practice.  It gives you continuity, predictability, and almost no computational overhead.  For many real-world tasks that is exactly the sweet spot between raw straight-line interpolation and the heavier machinery of full spline packages.
