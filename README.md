@@ -1,7 +1,8 @@
 # Sinusoidal Interpolation
 
-> “Look, I’m not saying splines are *bad*. I’m just saying I’d rather divide by
-> zero than drag LAPACK into yet another side project.”  
+> “Look, I’m not saying splines are *bad*.
+> I’m just saying I’d rather divide by zero than drag LAPACK into yet another side project.”
+> 
 > - *me, January 11, 2025 at 1:41:17 AM, 10 seconds before making this*
 
 Connecting scattered points smoothly is a common problem that arises in various applications, such as easing animations, shaping audio envelopes, planning a robot arm’s trajectory, or simply rendering a visually appealing curve in a plotting app. The half-period sine wave emerges as a versatile building block for this task. It never goes out outside of the range between two adjacent points, requires only two numbers per axis to define its position, is computed in linear time, behaves predictably, is perfectly smooth, and my personal favorite, it is infinitely differentiable.
