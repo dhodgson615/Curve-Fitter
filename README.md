@@ -91,11 +91,9 @@ Connecting scattered points smoothly is a common problem that arises in various 
 * Use different phase angles so the derivative at $x_1$ or
   $x_2$ matches a specified value instead of 0.
 
-* Swap the hard-coded half-period for any fraction
-  you like, then keep Newton–Raphson to solve for the new phase.
+* Swap the hard-coded half-period for any fraction you like, then keep Newton–Raphson to solve for the new phase.
 
-* Feed the same scalars into every coordinate axis to
-  bend paths in 3-D space.
+* Input each point into every coordinate axis to bend paths in 3-D space.
 
 ---
 
