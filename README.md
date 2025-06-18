@@ -22,7 +22,7 @@ Connecting scattered points smoothly is a common problem that arises in various 
 
 ## The Math, Step by Step
 
-1. Given two points $P_1 = (x_1,\,y_1), \qquad P_2 = (x_2,\,y_2) \quad \text{with } x_2 > x_1$, we want a function $f(x)$ that  passes through both points and has zero slope at each point.
+1. Given two points $P_1 = (x_1,\,y_1)$ and $P_2 = (x_2,\,y_2)$ with $x_2 > x_1$, we want a function $f(x)$ that  passes through both points and has zero slope at each point.
 
 2. A shifted sine can do that:
 
