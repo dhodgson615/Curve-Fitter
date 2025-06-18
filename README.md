@@ -1,7 +1,7 @@
 # Sinusoidal (Ω-Curve) Interpolation
 
 Smoothly connecting a few scattered points is a problem that shows up
-everywhere—think of easing animations, shaping audio envelopes, planning a
+everywhere. Think of easing animations, shaping audio envelopes, planning a
 robot arm’s journey, or simply drawing a pretty curve through data in a
 plotting app. A half-period sine wave is a surprisingly handy building block
 for that job: it starts flat, ends flat, never overshoots, and needs only two
@@ -19,8 +19,8 @@ accompanying Python script is doing.
 * **Visual and kinematic smoothness**
 
   A half sine begins and ends with zero slope. Chaining several of them yields
-  a curve that has no visible kinks and no sudden jumps in velocity—perfect for
-  motion that should look “natural.”
+  a curve that has no visible kinks and no sudden jumps in velocity. It's perfect
+  for motion that should look “natural.”
 
 * **Predictable curvature**
 
@@ -138,7 +138,7 @@ accompanying Python script is doing.
 
 ## Caveats
 
-* If two points share the same x-coordinate, the formula divides by zero—skip
+* If two points share the same x-coordinate, the formula divides by zero. Skip
   or pre-process such samples.
 
 * When $y_1 = y_2$ the amplitude vanishes; you might decide a straight
