@@ -29,11 +29,13 @@ Connecting scattered points smoothly is a common problem that arises in various 
 
    $f(x) = A \sin\bigl(\omega(x - \phi)\bigr) + C.$
 
-3. Exactly half a period must fit between the x-coordinates, so $\omega = \dfrac{\pi}{x_2 - x_1}.$
+3. Exactly half a period must fit between the x-coordinates, so
 
-4. The derivative $f'(x) = A\omega\cos(\ldots)$ vanishes when the cosine is $\pm 1$. That means the sine must start at $-\frac{\pi}{2}$ and end at $+\frac{\pi}{2}$. Translating this into a phase offset introduces a single unknown $n$.
+   $\omega = \dfrac{\pi}{x_2 - x_1}.$
 
-5. **Solve for amplitude and shift**
+6. The derivative $f'(x) = A\omega\cos(\ldots)$ vanishes when the cosine is $\pm 1$. That means the sine must start at $-\frac{\pi}{2}$ and end at $+\frac{\pi}{2}$. Translating this into a phase offset introduces a single unknown $n$.
+
+7. **Solve for amplitude and shift**
 
    Plugging $x_1$ and $x_2$ into $f$ gives two linear equations:
 
@@ -43,16 +45,19 @@ Connecting scattered points smoothly is a common problem that arises in various 
 
    $A = \frac{y_2 - y_1}{2}, \qquad C = \frac{y_1 + y_2}{2}.$
 
-6. **Collect the pieces**
+8. **Collect the pieces**
 
    The half-sine segment finally reads
 
    $f(x) = \frac{y_2 - y_1}{2} \ \sin\\Bigl(\pi\,\frac{x - x_2 - n} {x_2 - x_1}\Bigr) + \frac{y_1 + y_2}{2},$
 
-   with $n$ picked so that $f(x_1) = y_1$. The closed-form value is
-   $-\frac{x_2 - x_1}{2}$, but in the code you’ll see Newton–Raphson used
-   instead. That iterative form is more flexible once you start experimenting
-   with non-standard easing profiles or if you need extreme precision.
+   with $n$ picked so that
+
+   $f(x_1) = y_1$. The closed-form value is
+   
+   $-\frac{x_2 - x_1}{2}$,
+
+   but in the code you’ll see Newton–Raphson used instead. That iterative form is more flexible once you start experimenting with non-standard easing profiles or if you need extreme precision.
 
 ---
 
