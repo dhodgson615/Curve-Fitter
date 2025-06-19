@@ -61,37 +61,6 @@ Connecting scattered points smoothly is a common problem that arises in various 
 
 ---
 
-## How the Python script ties it together
-
-1. **`parse_coords()`**
-
-   A quick regular expression allows you to paste points like `(1, 2), (3, 4)` directly into the console.
-
-2. **`f()`**
-
-   Direct transcription of the half-sine formula above.
-
-3. **`newton_raphson()`**
-
-   Finds the phase offset `n` by solving $f(x_1) - y_1 = 0$. Thirty iterations
-   with a tight tolerance give machine-precision roots and fall back gracefully
-   if the derivative ever hits zero.
-
-4. **`interpolate()`**
-
-   * Sort the points by `x`.
-
-   * For each consecutive pair, compute `n`, sample 250 values of `x`, and
-     store the matching `y`.
-
-   * Append the last raw point so the plotted curve closes exactly on it.
-
-5. **`main()`**
-
-   Sets a dark theme, draws the interpolated curve, and overlays the original points.
-
----
-
 ## Extending the idea
 
 * Use different phase angles so the derivative at $x_1$ or
