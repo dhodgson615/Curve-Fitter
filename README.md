@@ -57,7 +57,7 @@ Connecting scattered points smoothly is a common problem that arises in various 
    
    $-\frac{x_2 - x_1}{2}$,
 
-   but in the code you’ll see Newton–Raphson used instead. That iterative form is more flexible once you start experimenting with non-standard easing profiles or if you need extreme precision.
+   but in the code you’ll see Newton–Raphson used instead. I predict that iterative form is more flexible once you start experimenting with non-standard easing profiles or if you need extreme precision.
 
 ---
 
