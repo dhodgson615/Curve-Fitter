@@ -1,17 +1,18 @@
 from re import findall
 
 import matplotlib.pyplot as plot
-import pandas as pd
 from numpy import array, cos, linspace, pi, sin
+from pandas import read_csv
 
-from config import (CSV_FILE, CSV_PLOT_CONFIG, INTERPOLATION_CONFIG,
-                    PLOT_CONFIG, SAMPLE_PLOT_CONFIG, SAMPLE_POINTS)
+from src.config import (CSV_FILE, INTERPOLATION_CONFIG,
+                        PLOT_CONFIG, SAMPLE_PLOT_CONFIG, SAMPLE_POINTS)
+from data.data_gen import generate
 
 COORD_REGEX = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
 
 
 def parse_coords(s):
-    return [tuple(map(float, findall(COORD_REGEX, s)))]
+    return [(float(x), float(y)) for x, y in findall(COORD_REGEX, s)]
 
 
 def f(x, x1, x2, y1, y2, n):
@@ -22,6 +23,10 @@ def newton_raphson(x1, x2, y1, y2, iters=None, tol=None):
     iters = iters or INTERPOLATION_CONFIG["newton_raphson_iterations"]
     tol = tol or INTERPOLATION_CONFIG["newton_raphson_tolerance"]
 
+    # Divide by zero check
+    if x2 == x1:
+        raise ValueError("Newton–Raphson derivative hit zero")
+
     n = 0.0
     for _ in range(iters):
         fn = (y2 - y1) / 2 * sin(pi * n / (x2 - x1)) + (y1 + y2) / 2 - y1
@@ -31,7 +36,9 @@ def newton_raphson(x1, x2, y1, y2, iters=None, tol=None):
             break
         if fp == 0:
             raise ValueError("Newton–Raphson derivative hit zero")
+
         n -= fn / fp
+
     return n
 
 
@@ -55,7 +62,7 @@ def interpolate(pts, pts_per_seg=None):
 
 
 def load_points_from_csv(filename, x_col=None, y_col=None):
-    df = pd.read_csv(filename)
+    df = read_csv(filename)
     x_col = x_col or df.columns[0]
     y_col = y_col or df.columns[1]
     return list(zip(df[x_col], df[y_col])), x_col, y_col
@@ -114,6 +121,9 @@ def graph(points=None, config=None):
 
 
 if __name__ == "__main__":
+    if SAMPLE_PLOT_CONFIG.get("regenerate_points", True):
+        generate()
+
     try:
         data_points, x_column, y_column = load_points_from_csv(CSV_FILE)
         graph(points=data_points)

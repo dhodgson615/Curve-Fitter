@@ -19,7 +19,7 @@ PLOT_CONFIG = {
 }
 
 # CSV configuration
-CSV_FILE = "data_points.csv"
+CSV_FILE = "../data/data_points.csv"
 
 # Default sample points if CSV is not found
 SAMPLE_POINTS = [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
@@ -43,6 +43,7 @@ SAMPLE_PLOT_CONFIG = {
     "point_label": "Sample Points",
     "graph_title": "Smooth Sine Interpolation Demo",
     "show_grid": True,
+    "regenerate_points": True,
 }
 
 # Interpolation settings
