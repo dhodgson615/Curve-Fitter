@@ -2,22 +2,22 @@
 
 > “Look, I’m not saying splines are *bad*.
 > I’m just saying I’d rather divide by zero than drag LAPACK into yet another side project.”
-> 
+>
 > \- *me, January 11, 2025 at 1:41:17 AM, 10 seconds before making this*
 
 Connecting scattered points smoothly is a common problem that arises in various applications, such as easing animations, shaping audio envelopes, planning a robot arm’s trajectory, or simply rendering a visually appealing curve in a plotting app. The half-period sine wave emerges as a versatile building block for this task. It never goes out outside of the range between two adjacent points, requires only two numbers per axis to define its position, is computed in linear time, behaves predictably, is perfectly smooth, and my personal favorite, it is infinitely differentiable.
 
 ---
 
-## Why bother with half-sine interpolation?
+## Why Bother with Half-sine Interpolation?
 
-  * A half-sine curve starts and ends with a slope of 0. By chaining several of these curves, you can create a smooth curve without any visible kinks or sudden jumps in velocity, making it ideal for simulating natural motion.
+Half-sine curves are uniquely well-suited for smooth interpolation because they begin and end with zero slope. This makes it easy to chain them together without introducing sharp corners or sudden changes in velocity, making them perfect for modeling natural motion.
 
-  * Because amplitude is fixed by the endpoints, the curve can’t flare out into the wild oscillations that sometimes plague polynomial fits.
+Unlike polynomial fits, which can spiral into unpredictable oscillations, half-sines behave more predictably. Their amplitude is inherently constrained by the endpoints, so you don’t get those wild, out-of-bounds flares.
 
-  * A cubic spline segment needs four constraints and a matrix solve. A half-sine uses the endpoints alone, fits in one line of algebra, and every CPU on Earth has a hardware `sin` instruction.
+They’re also lightweight. While cubic splines require four constraints and a matrix solve per segment, a half-sine interpolation is a single line of algebra. It’s efficient and practical, especially since almost every CPU  on Earth has a hardware `sin` instruction.
 
-  * Changing one point touches only the two adjacent segments. That locality is valuable in real-time systems and interactive editors.
+Also, tweaking one point only affects the two neighboring segments. That makes this method especially appealing for real-time applications and interactive editors where responsiveness matters.
 
 ---
 
@@ -54,7 +54,7 @@ Connecting scattered points smoothly is a common problem that arises in various 
    with $n$ picked so that
 
    $f(x_1) = y_1$. The closed-form value is
-   
+
    $-\frac{x_2 - x_1}{2}$,
 
    but in the code you’ll see Newton–Raphson used instead. I predict that iterative form is more flexible once you start experimenting with non-standard easing profiles or if you need extreme precision.
@@ -63,19 +63,17 @@ Connecting scattered points smoothly is a common problem that arises in various 
 
 ## Extending the idea
 
-* Use different phase angles so the derivative at $x_1$ or
-  $x_2$ matches a specified value instead of 0.
+There’s a lot of flexibility baked into this approach. Instead of forcing the slope at the endpoints to be zero, you can adjust the phase angle to match any desired derivative at either end, giving you fine-grained control over velocity or direction.
 
-* Swap the hard-coded half-period for any fraction you like, then keep Newton–Raphson to solve for the new phase.
+Want more control over the curve shape? Replace the default half-period with any fraction you like. You can still use Newton–Raphson to solve for the corresponding phase, so the math stays manageable.
 
-* Input each point into every coordinate axis to bend paths in 3-D space.
+If you want to modify this idea for use as a curve fit algorithm instead of an interpolation algorithm, you can weight the points using a “gravity” approach to bring them closer together and treat collisions as singular units. Alternatively, you could define a maximum number of half-sines to generate and iteratively find the points that minimize the error values.
+
+And you’re not limited to 2D. By feeding each point’s interpolation into multiple coordinate axes, you can smoothly bend paths through 3D space as well.
 
 ---
 
 ## Caveats
-
-* If two points share the same x-coordinate, the formula divides by 0. Skip
-  or pre-process such samples.
 
 * Every segment ends with zero velocity. If you need momentum to carry across
   points, consider quarter-cosine pairs or cubic splines.
@@ -85,4 +83,3 @@ Connecting scattered points smoothly is a common problem that arises in various 
 ## Closing thought
 
 A half-period sine function, though conceptually small, offers significant practical advantages. It ensures continuity, predictability, and minimal computational overhead. This makes it an ideal choice for various real-world tasks, bridging the gap between straightforward linear interpolation and the more complex functionalities of full spline packages.
-
