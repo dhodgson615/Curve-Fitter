@@ -75,8 +75,7 @@ And you’re not limited to 2D. By feeding each point’s interpolation into mul
 
 ## Caveats
 
-* Every segment ends with zero velocity. If you need momentum to carry across
-  points, consider quarter-cosine pairs or cubic splines.
+Every segment ends with zero velocity. If you need momentum to carry across points, consider quarter-cosine pairs or cubic splines.
 
 ---
 
