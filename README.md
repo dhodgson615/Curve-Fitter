@@ -61,7 +61,7 @@ Also, tweaking one point only affects the two neighboring segments. That makes t
 
 ---
 
-## Extending the idea
+## Extending the Idea
 
 There’s a lot of flexibility baked into this approach. Instead of forcing the slope at the endpoints to be zero, you can adjust the phase angle to match any desired derivative at either end, giving you fine-grained control over velocity or direction.
 
@@ -82,4 +82,3 @@ Every segment ends with zero velocity. If you need momentum to carry across poin
 ## Closing Thought
 
 A half-period sine function, though conceptually small, offers significant practical advantages. It ensures continuity, predictability, and minimal computational overhead. This makes it an ideal choice for various real-world tasks, bridging the gap between straightforward linear interpolation and the more complex functionalities of full spline packages.
-
