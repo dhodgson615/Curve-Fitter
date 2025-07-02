@@ -13,7 +13,7 @@ Connecting scattered points smoothly is a common problem that arises in various 
 
 Half-sine curves are uniquely well-suited for smooth interpolation because they begin and end with zero slope. This makes it easy to chain them together without introducing sharp corners or sudden changes in velocity, making them perfect for modeling natural motion.
 
-Unlike polynomial fits, which can spiral into unpredictable oscillations, half-sines behave more predictably. Their amplitude is inherently constrained by the endpoints, so you don’t get those wild, out-of-bounds flares.
+Unlike polynomial fits, which can spiral into unpredictable oscillations, half-sines behave more predictably. Their amplitude is inherently constrained by the endpoints, which means they don't randomly explode.
 
 They’re also lightweight. While cubic splines require four constraints and a matrix solve per segment, a half-sine interpolation is a single line of algebra. It’s efficient and practical, especially since almost every CPU  on Earth has a hardware `sin` instruction.
 
