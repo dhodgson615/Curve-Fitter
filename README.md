@@ -81,4 +81,4 @@ Every segment ends with zero velocity. If you need momentum to carry across poin
 
 ## Closing Thought
 
-A half-period sine function, though conceptually small, offers significant practical advantages. It ensures continuity, predictability, and minimal computational overhead. This makes it an ideal choice for various real-world tasks, bridging the gap between straightforward linear interpolation and the more complex functionalities of full spline packages.
+A half-period sine function provides substantial practical advantages, including continuity, predictability, and minimal computational overhead. These features make it suitable for various real-world applications, bridging the gap between straightforward linear interpolation and the more sophisticated functionalities offered by full spline packages.
