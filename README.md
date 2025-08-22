@@ -9,7 +9,7 @@
 
 Connecting scattered points smoothly is a common problem that arises in various applications, such as easing animations, shaping audio envelopes, planning a robot arm’s trajectory, or simply rendering a visually appealing curve in a plotting app. The half-period sine wave emerges as a versatile building block for this task. It never goes outside of the range between two adjacent points, requires only two numbers per axis to define its position, is computed in linear time, behaves predictably, is perfectly smooth, and is infinitely differentiable.
 
----
+
 
 ## Why Bother with Half-sine Interpolation?
 
@@ -21,7 +21,7 @@ They’re also lightweight. While cubic splines require four constraints and a m
 
 Also, tweaking one point only affects the two neighboring segments. That makes this method especially appealing for real-time applications and interactive editors where responsiveness matters.
 
----
+
 
 ## The Math, Step by Step
 
@@ -61,7 +61,7 @@ Also, tweaking one point only affects the two neighboring segments. That makes t
 
    but in the code you’ll see Newton–Raphson used instead. I predict that iterative form is more flexible once you start experimenting with non-standard easing profiles or if you need extreme precision.
 
----
+
 
 ## Extending the Idea
 
