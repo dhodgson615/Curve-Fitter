@@ -72,15 +72,3 @@ Want more control over the curve shape? Replace the default half-period with any
 If you want to modify this idea for use as a curve fit algorithm instead of an interpolation algorithm, you can weight the points using a “gravity” approach to bring them closer together and treat collisions as singular units. Alternatively, you could define a maximum number of half-sines to generate and iteratively find the points that minimize the error values.
 
 And you’re not limited to 2D. By feeding each point’s interpolation into multiple coordinate axes, you can smoothly bend paths through 3D space as well.
-
----
-
-## Caveats
-
-Every segment ends with zero velocity. If you need momentum to carry across points, consider quarter-cosine pairs or cubic splines.
-
----
-
-## Closing Thought
-
-A half-period sine function provides substantial practical advantages, including continuity, predictability, and minimal computational overhead. These features make it suitable for various real-world applications, bridging the gap between straightforward linear interpolation and the more sophisticated functionalities offered by full spline packages.
