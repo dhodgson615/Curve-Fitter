@@ -72,3 +72,107 @@ Want more control over the curve shape? Replace the default half-period with any
 If you want to modify this idea for use as a curve fit algorithm instead of an interpolation algorithm, you can weight the points using a “gravity” approach to bring them closer together and treat collisions as singular units. Alternatively, you could define a maximum number of half-sines to generate and iteratively find the points that minimize the error values.
 
 And you’re not limited to 2D. By feeding each point’s interpolation into multiple coordinate axes, you can smoothly bend paths through 3D space as well.
+
+
+## Using the Library
+
+The Curve Fitter now provides both a clean object-oriented API and maintains backward compatibility with the original procedural interface.
+
+### Object-Oriented API (Recommended)
+
+The new OOP structure makes the library more extensible and easier to customize:
+
+```python
+from src.curve_fitter import CurveFitter
+
+# Basic usage
+fitter = CurveFitter()
+
+# Fit from coordinate string
+x_data, y_data = fitter.fit_from_coordinates("(0, 1), (2, 3), (4, 2)", show_plot=False)
+
+# Fit from CSV file
+x_data, y_data, x_col, y_col = fitter.fit_from_csv("data.csv", show_plot=False)
+
+# Fit from point list
+points = [(0, 1), (2, 3), (4, 2)]
+x_data, y_data = fitter.fit_from_points(points, show_plot=False)
+```
+
+### Customization
+
+Easy customization of interpolation and plotting parameters:
+
+```python
+# Custom interpolation settings
+interpolator_config = {
+    "newton_raphson_iterations": 50,
+    "newton_raphson_tolerance": 1e-15
+}
+
+# Custom plot styling
+plot_config = {
+    "curve_color": "purple",
+    "point_color": "orange", 
+    "graph_title": "My Custom Curve",
+    "show_grid": True
+}
+
+fitter = CurveFitter(
+    interpolator_config=interpolator_config,
+    plot_config=plot_config
+)
+```
+
+### Component Usage
+
+Use individual components for specialized needs:
+
+```python
+from src.data_loader import DataLoader
+from src.interpolator import SineInterpolator
+from src.plotter import CurvePlotter
+
+# Use components separately
+data_loader = DataLoader()
+interpolator = SineInterpolator()
+plotter = CurvePlotter()
+
+points = data_loader.parse_coordinates("(0, 1), (2, 3)")
+x_data, y_data = interpolator.interpolate(points)
+fig = plotter.plot_curve(x_data, y_data, points)
+```
+
+### Extensibility
+
+The OOP structure makes it easy to extend functionality:
+
+```python
+class CustomInterpolator(SineInterpolator):
+    def interpolate_with_logging(self, points):
+        print(f"Interpolating {len(points)} points...")
+        return self.interpolate(points)
+
+class SmartCurveFitter(CurveFitter):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.fit_count = 0
+    
+    def fit_from_points(self, points, **kwargs):
+        self.fit_count += 1
+        return super().fit_from_points(points, **kwargs)
+```
+
+### Backward Compatibility
+
+The original procedural interface still works unchanged:
+
+```python
+from src.main import parse_coords, interpolate, graph
+
+points = parse_coords("(0, 1), (2, 3), (4, 2)")
+x_data, y_data = interpolate(points)
+fig = graph(points=points)
+```
+
+See `examples.py` and `demo_oop.py` for more detailed usage examples.

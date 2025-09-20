@@ -1,3 +1,10 @@
+"""
+Main module for the Curve Fitter application.
+
+This module provides both the new object-oriented interface through the CurveFitter class
+and maintains backward compatibility with the original procedural functions.
+"""
+
 from re import findall
 
 import matplotlib.pyplot as plot
@@ -6,69 +13,55 @@ from pandas import read_csv
 
 from src.config import (CSV_FILE, INTERPOLATION_CONFIG,
                         PLOT_CONFIG, SAMPLE_PLOT_CONFIG, SAMPLE_POINTS)
+from src.curve_fitter import CurveFitter
 from data.data_gen import generate
 
+# Maintain backward compatibility with original regex constant
 COORD_REGEX = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
 
 
+# Backward compatibility functions - these now delegate to the object-oriented classes
 def parse_coords(s):
-    return [(float(x), float(y)) for x, y in findall(COORD_REGEX, s)]
+    """Parse coordinate string (backward compatibility function)."""
+    from src.data_loader import DataLoader
+    loader = DataLoader()
+    return loader.parse_coordinates(s)
 
 
 def f(x, x1, x2, y1, y2, n):
-    return (y2 - y1) / 2 * sin(pi * (x - x2 - n) / (x2 - x1)) + (y1 + y2) / 2
+    """Sine interpolation function (backward compatibility function)."""
+    from src.interpolator import SineInterpolator
+    interpolator = SineInterpolator()
+    return interpolator._sine_function(x, x1, x2, y1, y2, n)
 
 
 def newton_raphson(x1, x2, y1, y2, iters=None, tol=None):
-    iters = iters or INTERPOLATION_CONFIG["newton_raphson_iterations"]
-    tol = tol or INTERPOLATION_CONFIG["newton_raphson_tolerance"]
-
-    # Divide by zero check
-    if x2 == x1:
-        raise ValueError("Newton–Raphson derivative hit zero")
-
-    n = 0.0
-    for _ in range(iters):
-        fn = (y2 - y1) / 2 * sin(pi * n / (x2 - x1)) + (y1 + y2) / 2 - y1
-        fp = (y2 - y1) / 2 * cos(pi * n / (x2 - x1)) * pi / (x2 - x1)
-
-        if abs(fn) < tol:
-            break
-        if fp == 0:
-            raise ValueError("Newton–Raphson derivative hit zero")
-
-        n -= fn / fp
-
-    return n
+    """Newton-Raphson method (backward compatibility function)."""
+    from src.interpolator import SineInterpolator
+    interpolator = SineInterpolator(
+        newton_raphson_iterations=iters,
+        newton_raphson_tolerance=tol
+    )
+    return interpolator._newton_raphson(x1, x2, y1, y2)
 
 
 def interpolate(pts, pts_per_seg=None):
-    pts_per_seg = pts_per_seg or INTERPOLATION_CONFIG["points_per_segment"]
-    pts = sorted(pts)
-    xs_out, ys_out = [], []
-
-    for i in range(len(pts) - 1):
-        x1, y1 = pts[i]
-        x2, y2 = pts[i + 1]
-        seg_x = linspace(x1, x2, pts_per_seg, endpoint=False)
-        seg_y = f(seg_x, x1, x2, y1, y2, newton_raphson(x1, x2, y1, y2))
-        xs_out.extend(seg_x)
-        ys_out.extend(seg_y)
-
-    xs_out.append(pts[-1][0])
-    ys_out.append(pts[-1][1])
-
-    return array(xs_out), array(ys_out)
+    """Interpolate points (backward compatibility function)."""
+    from src.interpolator import SineInterpolator
+    interpolator = SineInterpolator()
+    return interpolator.interpolate(pts, pts_per_seg)
 
 
 def load_points_from_csv(filename, x_col=None, y_col=None):
-    df = read_csv(filename)
-    x_col = x_col or df.columns[0]
-    y_col = y_col or df.columns[1]
-    return list(zip(df[x_col], df[y_col])), x_col, y_col
+    """Load points from CSV (backward compatibility function)."""
+    from src.data_loader import DataLoader
+    loader = DataLoader()
+    points, x_col, y_col = loader.load_from_csv(filename, x_col, y_col)
+    return points, x_col, y_col
 
 
 def graph(points=None, config=None):
+    """Create graph (backward compatibility function)."""
     # Use default config if none provided
     cfg = PLOT_CONFIG.copy()
     if config:
@@ -120,6 +113,7 @@ def graph(points=None, config=None):
     return fig
 
 
+# Main execution remains the same for backward compatibility
 if __name__ == "__main__":
     if SAMPLE_PLOT_CONFIG.get("regenerate_points", True):
         generate()
