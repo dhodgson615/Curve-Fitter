@@ -174,11 +174,11 @@ def graph(
     matplotlib.pyplot.plot(
         x,
         y,
-        label=cfg["curve_label"],
-        color=cfg["curve_color"],
-        linestyle=cfg["curve_line_style"],
-        linewidth=cfg["curve_line_width"],
-        alpha=cfg["alpha"],
+        label=str(cfg["curve_label"]),
+        color=str(cfg["curve_color"]),
+        linestyle=str(cfg["curve_line_style"]),
+        linewidth=float(cfg["curve_line_width"]),
+        alpha=float(cfg["alpha"]),
     )
 
     plot.scatter(
