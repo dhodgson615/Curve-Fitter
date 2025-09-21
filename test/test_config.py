@@ -41,7 +41,7 @@ class TestConfig:
         assert isinstance(CSV_FILE, str)
         assert CSV_FILE.endswith(".csv")
 
-    def test_csv_plot_config(self):
+    def test_csv_plot_config(self) -> None:
         # Test that CSV_PLOT_CONFIG exists and has expected keys
         assert isinstance(CSV_PLOT_CONFIG, dict)
         essential_keys = [
