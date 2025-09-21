@@ -24,8 +24,26 @@ except ImportError:
 COORD_REGEX = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
 
 
-def parse_coords(s):
-    return [(float(x), float(y)) for x, y in findall(COORD_REGEX, s)]
+def parse_coords(s: str) -> list[tuple[float, float]]:
+    return [(float(x), float(y)) for x, y in re.findall(COORD_REGEX, s)]
+
+
+def f(
+    x: typing.Union[float, npt.NDArray[np.float64]],
+    x1: float,
+    x2: float,
+    y1: float,
+    y2: float,
+    n: float,
+) -> npt.NDArray[np.float64]:
+    """Calculate interpolation values using sine function with
+    adjustment n
+    """
+    if isinstance(x, float):
+        x_array = np.array([x], dtype=np.float64)
+
+    else:
+        x_array = x
 
 
 def f(x, x1, x2, y1, y2, n):
