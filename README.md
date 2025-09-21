@@ -79,7 +79,9 @@ editors where responsiveness matters.
 
    with $n$ picked so that
 
-   $f(x_1) = y_1$. The closed-form value is
+   $f(x_1) = y_1$.
+
+   The closed-form value is
 
    $-\frac{x_2 - x_1}{2}$,
 
