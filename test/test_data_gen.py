@@ -90,7 +90,9 @@ class TestTemperatureDataGenerator:
         with pytest.raises(ValueError, match="Unknown interval type: invalid"):
             default_generator.generate_time_points()
 
-    def test_generate_temperatures(self, default_generator):
+    def test_generate_temperatures(
+        self, default_generator: TemperatureDataGenerator
+    ) -> None:
         hours = np.array([0, 6, 12, 18, 24])
         temps = default_generator.generate_temperatures(hours)
 
