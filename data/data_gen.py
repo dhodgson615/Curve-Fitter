@@ -10,15 +10,15 @@ import pandas
 class TemperatureDataGenerator:
     def __init__(
         self,
-        period_hours=24,
-        num_points=25,
-        interval_type="regular",  # 'regular', 'random', 'weighted'
-        base_temp=18,
-        amplitude=7,
-        noise_std=1.2,
-        random_seed=None,
-        output_file="data_points.csv",
-    ):
+        period_hours: float = 24,
+        num_points: int = 25,
+        interval_type: str = "regular",  # 'regular', 'random', 'weighted'
+        base_temp: float = 18,
+        amplitude: float = 7,
+        noise_std: float = 1.2,
+        random_seed: typing.Optional[int] = None,
+        output_file: str = "data_points.csv",
+    ) -> None:
         """Initialize temperature data generator with configurable
         parameters
         """
