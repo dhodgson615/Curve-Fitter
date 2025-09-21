@@ -183,6 +183,3 @@ class TestMainFunctions:
 
         # Clean up
         matplotlib.pyplot.close(fig)
-
-
-import tempfile
