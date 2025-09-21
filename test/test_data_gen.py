@@ -46,7 +46,9 @@ class TestTemperatureDataGenerator:
         assert custom_generator.noise_std == 0.5
         assert custom_generator.output_file == "custom.csv"
 
-    def test_generate_regular_time_points(self, default_generator):
+    def test_generate_regular_time_points(
+        self, default_generator: TemperatureDataGenerator
+    ) -> None:
         default_generator.interval_type = "regular"
         times = default_generator.generate_time_points()
 
