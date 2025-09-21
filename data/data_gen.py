@@ -188,6 +188,7 @@ def generate() -> None:
         default=7,
         help="Temperature amplitude in °C (default: 7)",
     )
+
     parser.add_argument(
         "--noise",
         type=float,
