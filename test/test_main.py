@@ -73,8 +73,8 @@ class TestMainFunctions:
         y1, y2 = -10, 10
         n = src.main.newton_raphson(x1, x2, y1, y2)
 
-        assert np.isclose(f(x1, x1, x2, y1, y2, n), y1)
-        assert np.isclose(f(x2, x1, x2, y1, y2, n), y2)
+        assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
+        assert np.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 5: When y1=y2, function should produce a flat line
         x1, x2 = 0, 10
