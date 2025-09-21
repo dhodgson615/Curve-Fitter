@@ -25,7 +25,7 @@ class TestConfig:
         ]
         
         for key in essential_keys:
-            assert key in PLOT_CONFIG
+            assert key in src.config.PLOT_CONFIG
 
     def test_sample_points(self) -> None:
         # Test that SAMPLE_POINTS contains valid point data
