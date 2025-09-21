@@ -95,7 +95,7 @@ class TemperatureDataGenerator:
                     points_per_segment[keys[idx]] += 1 if diff > 0 else -1
 
             # Generate points within each segment
-            times = []
+            time_points: typing.List[float] = []
             for seg, (start, end) in day_segments.items():
                 count = points_per_segment[seg]
                 if count > 0:
