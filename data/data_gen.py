@@ -65,6 +65,7 @@ class TemperatureDataGenerator:
             # Adjust segments if period is not 24 hours
             if self.period_hours != 24:
                 scale = self.period_hours / 24
+
                 day_segments = {
                     k: (v[0] * scale, v[1] * scale)
                     for k, v in day_segments.items()
