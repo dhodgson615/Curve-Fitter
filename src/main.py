@@ -199,7 +199,7 @@ def graph(
         matplotlib.pyplot.xlabel(str(cfg["x_label"]))
 
     if cfg["y_label"]:
-        plot.ylabel(cfg["y_label"])
+        matplotlib.pyplot.ylabel(str(cfg["y_label"]))
 
     plot.legend()
     plot.grid(cfg["show_grid"])
