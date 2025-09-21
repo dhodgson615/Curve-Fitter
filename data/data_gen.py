@@ -34,7 +34,7 @@ class TemperatureDataGenerator:
         if random_seed is not None:
             numpy.random.seed(random_seed)
 
-    def generate_time_points(self):
+    def generate_time_points(self) -> npt.NDArray[np.float64]:
         """Generate time points based on specified interval type"""
         if self.interval_type == "regular":
             # Regular intervals
