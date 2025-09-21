@@ -174,6 +174,7 @@ def generate() -> None:
         default="regular",
         help="Interval distribution type (default: regular)",
     )
+
     parser.add_argument(
         "--base-temp",
         type=float,
