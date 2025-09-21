@@ -52,6 +52,7 @@ class TestConfig:
             "point_label",
             "show_grid",
         ]
+
         for key in essential_keys:
             assert key in src.config.CSV_PLOT_CONFIG
 
