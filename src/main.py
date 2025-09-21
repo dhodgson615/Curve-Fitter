@@ -164,8 +164,11 @@ def graph(
     x, y = interpolate(points)
 
     # Set up plot
-    plot.style.use(cfg["plot_style"])
-    fig = plot.figure(figsize=cfg["figsize"])
+    matplotlib.pyplot.style.use(str(cfg["plot_style"]))
+
+    fig = matplotlib.pyplot.figure(
+        figsize=typing.cast(tuple[float, float], cfg["figsize"])
+    )
 
     # Plot curve and points
     plot.plot(
