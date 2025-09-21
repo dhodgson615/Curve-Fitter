@@ -26,8 +26,11 @@ class TestMainFunctions:
         ]
 
         # Test with irregular spacing
-        assert parse_coords("(1,2),(3,4)") == [(1.0, 2.0), (3.0, 4.0)]
-        assert parse_coords("( 1 , 2 ), ( 3 , 4 )") == [(1.0, 2.0), (3.0, 4.0)]
+        assert src.main.parse_coords("(1,2),(3,4)") == [(1.0, 2.0), (3.0, 4.0)]
+        assert src.main.parse_coords("( 1 , 2 ), ( 3 , 4 )") == [
+            (1.0, 2.0),
+            (3.0, 4.0),
+        ]
 
         # Test with negative and decimal values
         assert parse_coords("(-1.5, -2.3), (3.7, 4.1)") == [
