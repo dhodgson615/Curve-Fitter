@@ -59,7 +59,9 @@ class TestTemperatureDataGenerator:
         diffs = np.diff(times)
         assert np.allclose(diffs, diffs[0])
 
-    def test_generate_random_time_points(self, default_generator):
+    def test_generate_random_time_points(
+        self, default_generator: TemperatureDataGenerator
+    ) -> None:
         default_generator.interval_type = "random"
         times = default_generator.generate_time_points()
 
