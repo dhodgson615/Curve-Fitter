@@ -2,7 +2,7 @@ import src.config
 
 
 class TestConfig:
-    def test_plot_config_exists(self):
+    def test_plot_config_exists(self) -> None:
         # Test that PLOT_CONFIG exists and has expected keys
         assert isinstance(PLOT_CONFIG, dict)
         essential_keys = [
