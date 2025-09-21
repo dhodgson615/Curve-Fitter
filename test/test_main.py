@@ -152,7 +152,10 @@ class TestMainFunctions:
                 assert points[-1] == (4, 1)
 
                 # Test with explicit column names
-                points, x_col, y_col = load_points_from_csv(tmp.name, "x", "y")
+                points, x_col, y_col = src.main.load_points_from_csv(
+                    tmp.name, "x", "y"
+                )
+
                 assert x_col == "x"
                 assert y_col == "y"
 
