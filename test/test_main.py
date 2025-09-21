@@ -128,6 +128,7 @@ class TestMainFunctions:
 
         # Check that the interpolated points include original points
         x_original, y_original = zip(*sample_points)
+
         assert np.isclose(x_interp[0], x_original[0])
         assert np.isclose(y_interp[0], y_original[0])
         assert np.isclose(x_interp[-1], x_original[-1])
