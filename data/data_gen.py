@@ -147,7 +147,7 @@ class TemperatureDataGenerator:
         return data
 
 
-def generate():
+def generate() -> None:
     """Parse command line arguments and generate data"""
     parser = argparse.ArgumentParser(
         description="Generate synthetic temperature data"
