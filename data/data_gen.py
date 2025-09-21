@@ -127,7 +127,7 @@ class TemperatureDataGenerator:
 
         return temps
 
-    def generate_and_save(self):
+    def generate_and_save(self) -> pandas.DataFrame:
         """Generate data and save to CSV file"""
         hours = self.generate_time_points()
         temps = self.generate_temperatures(hours)
