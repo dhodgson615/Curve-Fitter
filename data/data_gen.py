@@ -195,6 +195,7 @@ def generate() -> None:
         default=1.2,
         help="Standard deviation of noise (default: 1.2)",
     )
+
     parser.add_argument(
         "--seed", type=int, default=None, help="Random seed (default: None)"
     )
