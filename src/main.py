@@ -193,7 +193,8 @@ def graph(
     )
 
     # Add labels and customize
-    plot.title(cfg["graph_title"])
+    matplotlib.pyplot.title(str(cfg["graph_title"]))
+
     if cfg["x_label"]:
         plot.xlabel(cfg["x_label"])
     if cfg["y_label"]:
