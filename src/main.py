@@ -196,7 +196,8 @@ def graph(
     matplotlib.pyplot.title(str(cfg["graph_title"]))
 
     if cfg["x_label"]:
-        plot.xlabel(cfg["x_label"])
+        matplotlib.pyplot.xlabel(str(cfg["x_label"]))
+
     if cfg["y_label"]:
         plot.ylabel(cfg["y_label"])
 
