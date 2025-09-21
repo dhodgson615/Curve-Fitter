@@ -16,7 +16,7 @@ class TestTemperatureDataGenerator:
             random_seed=42
         )  # Fixed seed for reproducibility
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         # Test default initialization
         generator = TemperatureDataGenerator()
         assert generator.period_hours == 24
