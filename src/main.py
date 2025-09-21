@@ -97,8 +97,17 @@ def newton_raphson(
     return n
 
 
-def interpolate(pts, pts_per_seg=None):
-    pts_per_seg = pts_per_seg or INTERPOLATION_CONFIG["points_per_segment"]
+# Fixed interpolate function handling None types and array types
+def interpolate(
+    pts: list[tuple[float, float]], pts_per_seg: typing.Optional[int] = None
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    """Interpolate a smooth curve through the given points"""
+    points_per_segment: int = (
+        pts_per_seg
+        if pts_per_seg is not None
+        else int(config_module.INTERPOLATION_CONFIG["points_per_segment"])
+    )
+
     pts = sorted(pts)
     xs_out, ys_out = [], []
 
