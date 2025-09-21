@@ -57,7 +57,8 @@ class TestConfig:
 
     def test_sample_plot_config(self) -> None:
         # Test that SAMPLE_PLOT_CONFIG exists and has expected keys
-        assert isinstance(SAMPLE_PLOT_CONFIG, dict)
+        assert isinstance(src.config.SAMPLE_PLOT_CONFIG, dict)
+        
         essential_keys = [
             "plot_style",
             "figsize",
