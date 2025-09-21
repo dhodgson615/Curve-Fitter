@@ -109,7 +109,8 @@ def interpolate(
     )
 
     pts = sorted(pts)
-    xs_out, ys_out = [], []
+    xs_out: list[float] = []
+    ys_out: list[float] = []
 
     for i in range(len(pts) - 1):
         x1, y1 = pts[i]
