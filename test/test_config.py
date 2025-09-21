@@ -32,7 +32,7 @@ class TestConfig:
         assert isinstance(src.config.SAMPLE_POINTS, list)
         assert len(src.config.SAMPLE_POINTS) > 0
 
-        for point in SAMPLE_POINTS:
+        for point in src.config.SAMPLE_POINTS:
             assert isinstance(point, tuple)
             assert len(point) == 2
             assert isinstance(point[0], (int, float))
