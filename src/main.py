@@ -152,7 +152,7 @@ def graph(
     """Create a graph from interpolated points"""
     # Use default config if none provided
     cfg: typing.Dict[str, typing.Any] = config_module.PLOT_CONFIG.copy()
-    
+
     if config:
         cfg.update(config)
 
