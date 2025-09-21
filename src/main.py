@@ -88,6 +88,7 @@ def newton_raphson(
 
         if abs(fn) < tolerance:
             break
+            
         if fp == 0:
             raise ValueError("Newton–Raphson derivative hit zero")
 
