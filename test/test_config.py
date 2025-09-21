@@ -1,7 +1,4 @@
-import pytest
-
-from src.config import (CSV_FILE, CSV_PLOT_CONFIG, INTERPOLATION_CONFIG,
-                        PLOT_CONFIG, SAMPLE_PLOT_CONFIG, SAMPLE_POINTS)
+import src.config
 
 
 class TestConfig:
