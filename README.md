@@ -83,7 +83,7 @@ editors where responsiveness matters.
 
    The closed-form value is
 
-   $-\frac{x_2 - x_1}{2}$,
+   $-\frac{x_2 - x_1}{2}$
 
    but in the code you’ll see Newton–Raphson used instead. I predict that
    iterative form is more flexible once you start experimenting with
