@@ -105,7 +105,7 @@ class TemperatureDataGenerator:
                     segment_times = sorted(float_values)
                     time_points.extend(segment_times)
 
-            return np.sort(times)
+            return np.array(sorted(time_points), dtype=np.float64)
 
         else:
             raise ValueError(f"Unknown interval type: {self.interval_type}")
