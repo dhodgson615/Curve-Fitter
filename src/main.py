@@ -201,8 +201,8 @@ def graph(
     if cfg["y_label"]:
         matplotlib.pyplot.ylabel(str(cfg["y_label"]))
 
-    plot.legend()
-    plot.grid(cfg["show_grid"])
+    matplotlib.pyplot.legend()
+    matplotlib.pyplot.grid(bool(cfg["show_grid"]))
 
     if cfg["show_plot"]:
         plot.show()
