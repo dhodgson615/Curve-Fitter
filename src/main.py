@@ -127,7 +127,9 @@ def interpolate(
     xs_out.append(pts[-1][0])
     ys_out.append(pts[-1][1])
 
-    return array(xs_out), array(ys_out)
+    return np.array(xs_out, dtype=np.float64), np.array(
+        ys_out, dtype=np.float64
+    )
 
 
 def load_points_from_csv(filename, x_col=None, y_col=None):
