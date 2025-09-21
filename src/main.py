@@ -145,7 +145,11 @@ def load_points_from_csv(
     return list(zip(df[x_col], df[y_col])), x_col, y_col
 
 
-def graph(points=None, config=None):
+def graph(
+    points: typing.Optional[list[tuple[float, float]]] = None,
+    config: typing.Optional[typing.Dict[str, typing.Any]] = None,
+) -> Figure:
+    """Create a graph from interpolated points"""
     # Use default config if none provided
     cfg = PLOT_CONFIG.copy()
     if config:
