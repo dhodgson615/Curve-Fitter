@@ -37,8 +37,9 @@ class TemperatureDataGenerator:
     def generate_time_points(self) -> npt.NDArray[np.float64]:
         """Generate time points based on specified interval type"""
         if self.interval_type == "regular":
-            # Regular intervals
-            return np.linspace(0, self.period_hours, self.num_points)
+            return np.linspace(
+                0, self.period_hours, self.num_points, dtype=np.float64
+            )
 
         elif self.interval_type == "random":
             # Random intervals
