@@ -97,8 +97,9 @@ class TestMainFunctions:
         # Test with different values
         x1, x2 = 1, 3
         y1, y2 = 5, 15
-        n = newton_raphson(x1, x2, y1, y2)
-        result = f(x1, x1, x2, y1, y2, n)
+        n = src.main.newton_raphson(x1, x2, y1, y2)
+        result = src.main.f(x1, x1, x2, y1, y2, n)
+
         assert np.isclose(result, y1)
 
     def test_newton_raphson_zero_derivative(self) -> None:
