@@ -76,7 +76,8 @@ class TestConfig:
 
     def test_interpolation_config(self) -> None:
         # Test that INTERPOLATION_CONFIG exists and has expected keys
-        assert isinstance(INTERPOLATION_CONFIG, dict)
+        assert isinstance(src.config.INTERPOLATION_CONFIG, dict)
+        
         essential_keys = [
             "points_per_segment",
             "newton_raphson_iterations",
