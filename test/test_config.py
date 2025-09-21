@@ -88,6 +88,6 @@ class TestConfig:
             assert key in src.config.INTERPOLATION_CONFIG
 
         # Check numeric values are appropriate
-        assert INTERPOLATION_CONFIG["points_per_segment"] > 0
-        assert INTERPOLATION_CONFIG["newton_raphson_iterations"] > 0
-        assert INTERPOLATION_CONFIG["newton_raphson_tolerance"] > 0
+        assert src.config.INTERPOLATION_CONFIG["points_per_segment"] > 0
+        assert src.config.INTERPOLATION_CONFIG["newton_raphson_iterations"] > 0
+        assert src.config.INTERPOLATION_CONFIG["newton_raphson_tolerance"] > 0
