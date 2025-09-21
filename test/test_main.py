@@ -18,7 +18,7 @@ class TestMainFunctions:
     def sample_points(self) -> list[tuple[float, float]]:
         return [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
 
-    def test_parse_coords(self):
+    def test_parse_coords(self) -> None:
         # Test basic coordinate parsing
         assert parse_coords("(1, 2), (3, 4)") == [(1.0, 2.0), (3.0, 4.0)]
 
