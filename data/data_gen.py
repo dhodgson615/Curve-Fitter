@@ -116,8 +116,9 @@ class TemperatureDataGenerator:
         """Generate temperature values for given hours"""
         # Scale the sine function to match the period
         scale_factor = 24 / self.period_hours
-        temps = self.base_temp + self.amplitude * sin(
-            (hours * scale_factor - 6) * pi / 12
+
+        temps = self.base_temp + self.amplitude * np.sin(
+            (hours * scale_factor - 6) * np.pi / 12
         )
 
         # Add noise
