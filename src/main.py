@@ -45,6 +45,9 @@ def f(
     else:
         x_array = x
 
+    result = (y2 - y1) / 2 * np.sin(np.pi * (x_array - x2 - n) / (x2 - x1)) + (
+        y1 + y2
+    ) / 2
 
 def f(x, x1, x2, y1, y2, n):
     return (y2 - y1) / 2 * sin(pi * (x - x2 - n) / (x2 - x1)) + (y1 + y2) / 2
