@@ -52,9 +52,31 @@ def f(
     return np.asarray(result, dtype=np.float64)
 
 
-def newton_raphson(x1, x2, y1, y2, iters=None, tol=None):
-    iters = iters or INTERPOLATION_CONFIG["newton_raphson_iterations"]
-    tol = tol or INTERPOLATION_CONFIG["newton_raphson_tolerance"]
+# Fixed newton_raphson function handling None types properly
+def newton_raphson(
+    x1: float,
+    x2: float,
+    y1: float,
+    y2: float,
+    iters: typing.Optional[int] = None,
+    tol: typing.Optional[float] = None,
+) -> float:
+    """Find adjustment value n using Newton-Raphson method"""
+    iterations: int = (
+        iters
+        if iters is not None
+        else int(
+            config_module.INTERPOLATION_CONFIG["newton_raphson_iterations"]
+        )
+    )
+
+    tolerance: float = (
+        tol
+        if tol is not None
+        else float(
+            config_module.INTERPOLATION_CONFIG["newton_raphson_tolerance"]
+        )
+    )
 
     # Divide by zero check
     if x2 == x1:
