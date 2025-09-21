@@ -42,9 +42,16 @@ class TemperatureDataGenerator:
             )
 
         elif self.interval_type == "random":
-            # Random intervals
-            times = sorted(uniform(0, self.period_hours, self.num_points - 1))
-            return np.append(times, self.period_hours)
+            random_values = numpy.random.uniform(
+                0, self.period_hours, self.num_points - 1
+            )
+
+            random_values_list = [float(x) for x in random_values]
+            random_times = sorted(random_values_list)
+
+            return np.array(
+                random_times + [self.period_hours], dtype=np.float64
+            )
 
         elif self.interval_type == "weighted":
             # More readings during day, fewer at night
