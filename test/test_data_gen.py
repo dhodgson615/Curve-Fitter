@@ -132,7 +132,9 @@ class TestTemperatureDataGenerator:
                 os.unlink(tmp.name)
 
     @mock.patch("data.data_gen.TemperatureDataGenerator.generate_and_save")
-    def test_generate_function(self, mock_generate_save):
+    def test_generate_function(
+        self, mock_generate_save: mock.MagicMock
+    ) -> None:
         with mock.patch("sys.argv", ["data_gen.py"]):
             from data.data_gen import generate
 
