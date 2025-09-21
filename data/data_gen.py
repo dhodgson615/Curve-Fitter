@@ -133,7 +133,10 @@ class TemperatureDataGenerator:
         temps = self.generate_temperatures(hours)
 
         # Create DataFrame and save to CSV
-        data = pd.DataFrame({"Time (hours)": hours, "Temperature (°C)": temps})
+        data = pandas.DataFrame(
+            {"Time (hours)": hours, "Temperature (°C)": temps}
+        )
+
         data.to_csv(self.output_file, index=False)
 
         print(
