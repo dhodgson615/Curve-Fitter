@@ -159,6 +159,7 @@ def generate() -> None:
         default=24,
         help="Total period in hours (default: 24)",
     )
+
     parser.add_argument(
         "--points",
         type=int,
