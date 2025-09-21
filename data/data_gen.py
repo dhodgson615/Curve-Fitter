@@ -32,7 +32,7 @@ class TemperatureDataGenerator:
 
         # Set random seed if provided
         if random_seed is not None:
-            seed(random_seed)
+            numpy.random.seed(random_seed)
 
     def generate_time_points(self):
         """Generate time points based on specified interval type"""
