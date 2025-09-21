@@ -97,7 +97,6 @@ def newton_raphson(
     return n
 
 
-# Fixed interpolate function handling None types and array types
 def interpolate(
     pts: list[tuple[float, float]], pts_per_seg: typing.Optional[int] = None
 ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
