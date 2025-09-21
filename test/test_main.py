@@ -143,7 +143,8 @@ class TestMainFunctions:
                 data.to_csv(tmp.name, index=False)
 
                 # Test loading with default column names
-                points, x_col, y_col = load_points_from_csv(tmp.name)
+                points, x_col, y_col = src.main.load_points_from_csv(tmp.name)
+
                 assert len(points) == 5
                 assert x_col == "x"
                 assert y_col == "y"
