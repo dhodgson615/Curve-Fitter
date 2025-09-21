@@ -205,7 +205,7 @@ def graph(
     matplotlib.pyplot.grid(bool(cfg["show_grid"]))
 
     if cfg["show_plot"]:
-        plot.show()
+        matplotlib.pyplot.show()
 
     return fig
 
