@@ -83,7 +83,9 @@ class TestTemperatureDataGenerator:
         # Check that times are sorted
         assert np.all(np.diff(times) > 0)
 
-    def test_invalid_interval_type(self, default_generator):
+    def test_invalid_interval_type(
+        self, default_generator: TemperatureDataGenerator
+    ) -> None:
         default_generator.interval_type = "invalid"
         with pytest.raises(ValueError, match="Unknown interval type: invalid"):
             default_generator.generate_time_points()
