@@ -98,6 +98,7 @@ class TemperatureDataGenerator:
             time_points: typing.List[float] = []
             for seg, (start, end) in day_segments.items():
                 count = points_per_segment[seg]
+
                 if count > 0:
                     segment_times = sorted(uniform(start, end, count))
                     times.extend(segment_times)
