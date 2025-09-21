@@ -121,8 +121,8 @@ class TemperatureDataGenerator:
             (hours * scale_factor - 6) * np.pi / 12
         )
 
-        # Add noise
-        noise = normal(0, self.noise_std, len(hours))
+        # Add noise - FIX: Use hours.size instead of len(int(hours))
+        noise = numpy.random.normal(0, self.noise_std, hours.size)
         temps += noise
 
         return temps
