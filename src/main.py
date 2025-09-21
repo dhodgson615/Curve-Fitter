@@ -1,4 +1,13 @@
-from re import findall
+import os
+import re
+import sys
+import typing
+
+import matplotlib.pyplot
+import numpy as np
+import numpy.typing as npt
+import pandas as pd
+from matplotlib.figure import Figure
 
 import matplotlib.pyplot as plot
 from numpy import array, cos, linspace, pi, sin
