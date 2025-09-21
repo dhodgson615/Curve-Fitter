@@ -8,6 +8,38 @@
 
 ![Demo](assets/Figure_1.png "Figure 1")
 
+## Installation
+
+### Requirements
+
+- Python 3.12 or higher
+- pip (Python package installer)
+
+### Quick Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dhodgson615/Curve-Fitter.git
+   cd Curve-Fitter
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Run tests to verify installation:
+   ```bash
+   python -m pytest test/
+   ```
+
+4. Try the data generator:
+   ```bash
+   python data/data_gen.py --help
+   ```
+
+## Overview
+
 Connecting scattered points smoothly is a common problem that arises in various
 applications, such as easing animations, shaping audio envelopes, planning a
 robot arm’s trajectory, or simply rendering a visually appealing curve in a
