@@ -23,7 +23,7 @@ class TestConfig:
             "show_plot",
             "alpha",
         ]
-        
+
         for key in essential_keys:
             assert key in src.config.PLOT_CONFIG
 
