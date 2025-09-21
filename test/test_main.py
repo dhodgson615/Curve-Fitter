@@ -110,7 +110,7 @@ class TestMainFunctions:
         with pytest.raises(
             ValueError, match="Newton–Raphson derivative hit zero"
         ):
-            newton_raphson(x1, x2, y1, y2)
+            src.main.newton_raphson(x1, x2, y1, y2)
 
     def test_interpolate(
         self, sample_points: list[tuple[float, float]]
