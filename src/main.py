@@ -182,7 +182,7 @@ def graph(
     )
 
     x_points, y_points = zip(*points)
-    
+
     matplotlib.pyplot.scatter(
         x_points,
         y_points,
