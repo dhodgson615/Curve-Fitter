@@ -171,7 +171,7 @@ def graph(
     )
 
     # Plot curve and points
-    plot.plot(
+    matplotlib.pyplot.plot(
         x,
         y,
         label=cfg["curve_label"],
