@@ -89,6 +89,7 @@ class TemperatureDataGenerator:
 
             if diff != 0:
                 keys = list(points_per_segment.keys())
+
                 for i in range(abs(diff)):
                     idx = i % len(keys)
                     points_per_segment[keys[idx]] += 1 if diff > 0 else -1
