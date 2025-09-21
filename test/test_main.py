@@ -152,7 +152,7 @@ class TestMainFunctions:
         sample_points: list[tuple[float, float]],
     ) -> None:
         # Test graph generation
-        fig = graph(points=sample_points, config={"show_plot": False})
+        fig = src.main.graph(points=sample_points, config={"show_plot": False})
 
         # Check that a figure was created
         assert isinstance(fig, matplotlib.figure.Figure)
