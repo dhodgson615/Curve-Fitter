@@ -166,6 +166,7 @@ def generate() -> None:
         default=25,
         help="Number of data points (default: 25)",
     )
+
     parser.add_argument(
         "--intervals",
         type=str,
