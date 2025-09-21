@@ -208,20 +208,3 @@ def graph(
         matplotlib.pyplot.show()
 
     return fig
-
-
-if __name__ == "__main__":
-    if SAMPLE_PLOT_CONFIG.get("regenerate_points", True):
-        generate()
-
-    try:
-        data_points, x_column, y_column = load_points_from_csv(CSV_FILE)
-        graph(points=data_points)
-
-    except FileNotFoundError:
-        print(f"CSV file '{CSV_FILE}' not found. Using sample points instead.")
-        graph(points=SAMPLE_POINTS, config=SAMPLE_PLOT_CONFIG)
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        raise e
