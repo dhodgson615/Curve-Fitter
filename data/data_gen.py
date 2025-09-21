@@ -71,7 +71,7 @@ class TemperatureDataGenerator:
                 }
 
             # Assign points to segments based on weights
-            weights = {
+            weights: dict[str, float] = {
                 "early_morning": 0.15,
                 "morning": 0.3,
                 "afternoon": 0.3,
