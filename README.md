@@ -74,7 +74,7 @@ editors where responsiveness matters.
 
    The half-sine segment finally reads
 
-   $f(x) = \frac{y_2 - y_1}{2} \ \sin\\Bigl(\pi\,\frac{x - x_2 - n} {x_2 -
+   $f(x) = \frac{y_2 - y_1}{2} \ \sin\ \Bigl(\pi\,\frac{x - x_2 - n} {x_2 -
    x_1}\Bigr) + \frac{y_1 + y_2}{2},$
 
    with $n$ picked so that
