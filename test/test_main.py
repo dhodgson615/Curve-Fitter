@@ -93,7 +93,7 @@ class TestMainFunctions:
         result = f(x1, x1, x2, y1, y2, n)
         assert np.isclose(result, y1)
 
-    def test_newton_raphson_zero_derivative(self):
+    def test_newton_raphson_zero_derivative(self) -> None:
         # Test when derivative hits zero
         x1, x2 = (0, 0)  # Should cause division by zero in derivative
         y1, y2 = 0, 10
