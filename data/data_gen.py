@@ -2,9 +2,9 @@ import argparse
 import typing
 
 import numpy as np
-import pandas as pd
-from numpy import pi, sin
-from numpy.random import normal, seed, uniform
+import numpy.random
+import numpy.typing as npt
+import pandas
 
 
 class TemperatureDataGenerator:
