@@ -103,7 +103,9 @@ class TestMainFunctions:
         ):
             newton_raphson(x1, x2, y1, y2)
 
-    def test_interpolate(self, sample_points):
+    def test_interpolate(
+        self, sample_points: list[tuple[float, float]]
+    ) -> None:
         # Test point interpolation
         x_interp, y_interp = interpolate(sample_points, pts_per_seg=10)
 
