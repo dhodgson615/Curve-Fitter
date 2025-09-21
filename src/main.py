@@ -141,7 +141,7 @@ def load_points_from_csv(
     df = pd.read_csv(filename)
     x_col = x_col or df.columns[0]
     y_col = y_col or df.columns[1]
-    
+
     return list(zip(df[x_col], df[y_col])), x_col, y_col
 
 
