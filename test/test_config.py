@@ -69,7 +69,7 @@ class TestConfig:
             "regenerate_points",
         ]
         for key in essential_keys:
-            assert key in SAMPLE_PLOT_CONFIG
+            assert key in src.config.SAMPLE_PLOT_CONFIG
 
         # Check that regenerate_points is a boolean
         assert isinstance(
