@@ -15,9 +15,11 @@ if __name__ == "__main__":
         0, os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     )
 
-from src.config import (CSV_FILE, INTERPOLATION_CONFIG,
-                        PLOT_CONFIG, SAMPLE_PLOT_CONFIG, SAMPLE_POINTS)
-from data.data_gen import generate
+try:
+    from src import config as config_module
+
+except ImportError:
+    import config as config_module  # type: ignore
 
 COORD_REGEX = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
 
