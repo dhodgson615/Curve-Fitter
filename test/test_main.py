@@ -58,7 +58,7 @@ class TestMainFunctions:
 
         # Test case 2: Without adjustment (n=0), midpoint should return y1
         mid_x = (x1 + x2) / 2
-        assert np.isclose(f(mid_x, x1, x2, y1, y2, 0), y1)
+        assert np.isclose(src.main.f(mid_x, x1, x2, y1, y2, 0), y1)
 
         # Test case 3: Negative values
         x1, x2 = -3, -1
