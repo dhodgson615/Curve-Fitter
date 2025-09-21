@@ -15,7 +15,7 @@ matplotlib.use("Agg")  # Set matplotlib to use non-interactive backend
 
 class TestMainFunctions:
     @pytest.fixture
-    def sample_points(self):
+    def sample_points(self) -> list[tuple[float, float]]:
         return [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
 
     def test_parse_coords(self):
