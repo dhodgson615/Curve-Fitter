@@ -20,7 +20,10 @@ class TestMainFunctions:
 
     def test_parse_coords(self) -> None:
         # Test basic coordinate parsing
-        assert parse_coords("(1, 2), (3, 4)") == [(1.0, 2.0), (3.0, 4.0)]
+        assert src.main.parse_coords("(1, 2), (3, 4)") == [
+            (1.0, 2.0),
+            (3.0, 4.0),
+        ]
 
         # Test with irregular spacing
         assert parse_coords("(1,2),(3,4)") == [(1.0, 2.0), (3.0, 4.0)]
