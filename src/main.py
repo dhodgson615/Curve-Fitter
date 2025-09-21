@@ -115,7 +115,11 @@ def interpolate(
     for i in range(len(pts) - 1):
         x1, y1 = pts[i]
         x2, y2 = pts[i + 1]
-        seg_x = linspace(x1, x2, pts_per_seg, endpoint=False)
+
+        seg_x = np.linspace(
+            x1, x2, points_per_segment, endpoint=False, dtype=np.float64
+        )
+        
         seg_y = f(seg_x, x1, x2, y1, y2, newton_raphson(x1, x2, y1, y2))
         xs_out.extend(seg_x)
         ys_out.extend(seg_y)
