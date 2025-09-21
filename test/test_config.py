@@ -40,8 +40,8 @@ class TestConfig:
 
     def test_csv_file_defined(self) -> None:
         # Check that CSV_FILE is defined
-        assert isinstance(CSV_FILE, str)
-        assert CSV_FILE.endswith(".csv")
+        assert isinstance(src.config.CSV_FILE, str)
+        assert src.config.CSV_FILE.endswith(".csv")
 
     def test_csv_plot_config(self) -> None:
         # Test that CSV_PLOT_CONFIG exists and has expected keys
