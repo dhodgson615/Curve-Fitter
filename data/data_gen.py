@@ -199,6 +199,7 @@ def generate() -> None:
     parser.add_argument(
         "--seed", type=int, default=None, help="Random seed (default: None)"
     )
+
     parser.add_argument(
         "--output",
         type=str,
