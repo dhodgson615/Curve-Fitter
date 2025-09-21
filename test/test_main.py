@@ -48,7 +48,7 @@ class TestMainFunctions:
         y1, y2 = 0, 10
 
         # Calculate the adjustment needed to make the curve pass through points
-        n = newton_raphson(x1, x2, y1, y2)
+        n = src.main.newton_raphson(x1, x2, y1, y2)
 
         # Test that the function returns y1 at x1
         assert np.isclose(f(x1, x1, x2, y1, y2, n), y1)
