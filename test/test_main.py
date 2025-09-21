@@ -121,7 +121,7 @@ class TestMainFunctions:
         assert np.isclose(x_interp[-1], x_original[-1])
         assert np.isclose(y_interp[-1], y_original[-1])
 
-    def test_load_points_from_csv(self):
+    def test_load_points_from_csv(self) -> None:
         # Create a test CSV file
         data = pd.DataFrame({"x": [0, 1, 2, 3, 4], "y": [5, 4, 3, 2, 1]})
 
