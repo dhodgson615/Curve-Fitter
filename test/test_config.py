@@ -45,7 +45,8 @@ class TestConfig:
 
     def test_csv_plot_config(self) -> None:
         # Test that CSV_PLOT_CONFIG exists and has expected keys
-        assert isinstance(CSV_PLOT_CONFIG, dict)
+        assert isinstance(src.config.CSV_PLOT_CONFIG, dict)
+        
         essential_keys = [
             "plot_style",
             "figsize",
