@@ -74,7 +74,7 @@ class TestConfig:
         # Check that regenerate_points is a boolean
         assert isinstance(SAMPLE_PLOT_CONFIG["regenerate_points"], bool)
 
-    def test_interpolation_config(self):
+    def test_interpolation_config(self) -> None:
         # Test that INTERPOLATION_CONFIG exists and has expected keys
         assert isinstance(INTERPOLATION_CONFIG, dict)
         essential_keys = [
