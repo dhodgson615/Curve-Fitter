@@ -36,7 +36,7 @@ class TestMainFunctions:
         matches = re.findall(COORD_REGEX, "(1, 2), (3, 4)")
         assert matches == [("1", "2"), ("3", "4")]
 
-    def test_f_function(self):
+    def test_f_function(self) -> None:
         x1, x2 = 0, 2
         y1, y2 = 0, 10
 
