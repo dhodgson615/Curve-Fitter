@@ -181,12 +181,15 @@ def graph(
         alpha=float(cfg["alpha"]),
     )
 
-    plot.scatter(
-        *zip(*points),
-        color=cfg["point_color"],
-        marker=cfg["point_marker"],
-        label=cfg["point_label"],
-        alpha=cfg["alpha"],
+    x_points, y_points = zip(*points)
+    
+    matplotlib.pyplot.scatter(
+        x_points,
+        y_points,
+        color=str(cfg["point_color"]),
+        marker=str(cfg["point_marker"]),
+        label=str(cfg["point_label"]),
+        alpha=float(cfg["alpha"]),
     )
 
     # Add labels and customize
