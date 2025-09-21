@@ -132,8 +132,13 @@ def interpolate(
     )
 
 
-def load_points_from_csv(filename, x_col=None, y_col=None):
-    df = read_csv(filename)
+def load_points_from_csv(
+    filename: str,
+    x_col: typing.Optional[str] = None,
+    y_col: typing.Optional[str] = None,
+) -> tuple[list[tuple[float, float]], str, str]:
+    """Load points from a CSV file"""
+    df = pd.read_csv(filename)
     x_col = x_col or df.columns[0]
     y_col = y_col or df.columns[1]
     return list(zip(df[x_col], df[y_col])), x_col, y_col
