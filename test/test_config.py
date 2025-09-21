@@ -5,7 +5,7 @@ class TestConfig:
     def test_plot_config_exists(self) -> None:
         # Test that PLOT_CONFIG exists and has expected keys
         assert isinstance(src.config.PLOT_CONFIG, dict)
-        
+
         essential_keys = [
             "plot_style",
             "figsize",
