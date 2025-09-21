@@ -36,7 +36,7 @@ class TestConfig:
             assert isinstance(point[0], (int, float))
             assert isinstance(point[1], (int, float))
 
-    def test_csv_file_defined(self):
+    def test_csv_file_defined(self) -> None:
         # Check that CSV_FILE is defined
         assert isinstance(CSV_FILE, str)
         assert CSV_FILE.endswith(".csv")
