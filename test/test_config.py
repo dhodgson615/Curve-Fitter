@@ -53,7 +53,7 @@ class TestConfig:
             "show_grid",
         ]
         for key in essential_keys:
-            assert key in CSV_PLOT_CONFIG
+            assert key in src.config.CSV_PLOT_CONFIG
 
     def test_sample_plot_config(self) -> None:
         # Test that SAMPLE_PLOT_CONFIG exists and has expected keys
