@@ -52,7 +52,6 @@ def f(
     return np.asarray(result, dtype=np.float64)
 
 
-# Fixed newton_raphson function handling None types properly
 def newton_raphson(
     x1: float,
     x2: float,
