@@ -55,7 +55,7 @@ class TemperatureDataGenerator:
 
         elif self.interval_type == "weighted":
             # More readings during day, fewer at night
-            day_segments = {
+            day_segments: dict[str, typing.Tuple[float, float]] = {
                 "early_morning": (0, 6),  # Fewer readings
                 "morning": (6, 12),  # More readings
                 "afternoon": (12, 18),  # More readings
