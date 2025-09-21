@@ -65,8 +65,8 @@ class TestMainFunctions:
         y1, y2 = -5, -2
         n = src.main.newton_raphson(x1, x2, y1, y2)
 
-        assert np.isclose(f(x1, x1, x2, y1, y2, n), y1)
-        assert np.isclose(f(x2, x1, x2, y1, y2, n), y2)
+        assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
+        assert np.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 4: Mixed positive and negative values
         x1, x2 = -5, 5
