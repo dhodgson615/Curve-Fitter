@@ -29,8 +29,8 @@ class TestConfig:
 
     def test_sample_points(self) -> None:
         # Test that SAMPLE_POINTS contains valid point data
-        assert isinstance(SAMPLE_POINTS, list)
-        assert len(SAMPLE_POINTS) > 0
+        assert isinstance(src.config.SAMPLE_POINTS, list)
+        assert len(src.config.SAMPLE_POINTS) > 0
 
         for point in SAMPLE_POINTS:
             assert isinstance(point, tuple)
