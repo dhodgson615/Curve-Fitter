@@ -110,7 +110,9 @@ class TemperatureDataGenerator:
         else:
             raise ValueError(f"Unknown interval type: {self.interval_type}")
 
-    def generate_temperatures(self, hours):
+    def generate_temperatures(
+        self, hours: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         """Generate temperature values for given hours"""
         # Scale the sine function to match the period
         scale_factor = 24 / self.period_hours
