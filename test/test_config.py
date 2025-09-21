@@ -85,7 +85,7 @@ class TestConfig:
         ]
 
         for key in essential_keys:
-            assert key in INTERPOLATION_CONFIG
+            assert key in src.config.INTERPOLATION_CONFIG
 
         # Check numeric values are appropriate
         assert INTERPOLATION_CONFIG["points_per_segment"] > 0
