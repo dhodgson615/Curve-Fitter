@@ -100,8 +100,10 @@ class TemperatureDataGenerator:
                 count = points_per_segment[seg]
 
                 if count > 0:
-                    segment_times = sorted(uniform(start, end, count))
-                    times.extend(segment_times)
+                    np_array = numpy.random.uniform(start, end, count)
+                    float_values = [float(x) for x in np_array]
+                    segment_times = sorted(float_values)
+                    time_points.extend(segment_times)
 
             return np.sort(times)
 
