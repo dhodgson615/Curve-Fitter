@@ -33,7 +33,7 @@ class TestMainFunctions:
         ]
 
         # Test with negative and decimal values
-        assert parse_coords("(-1.5, -2.3), (3.7, 4.1)") == [
+        assert src.main.parse_coords("(-1.5, -2.3), (3.7, 4.1)") == [
             (-1.5, -2.3),
             (3.7, 4.1),
         ]
