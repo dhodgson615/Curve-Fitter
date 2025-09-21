@@ -140,7 +140,8 @@ class TemperatureDataGenerator:
         data.to_csv(self.output_file, index=False)
 
         print(
-            f"CSV file '{self.output_file}' created with {len(hours)} temperature data points across {self.period_hours} hours"
+            f"CSV file '{self.output_file}' created with {len(hours)} "
+            f"temperature data points across {self.period_hours} hours"
         )
         return data
 
