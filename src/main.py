@@ -9,9 +9,11 @@ import numpy.typing as npt
 import pandas as pd
 from matplotlib.figure import Figure
 
-import matplotlib.pyplot as plot
-from numpy import array, cos, linspace, pi, sin
-from pandas import read_csv
+# Add the project root to Python path when running directly
+if __name__ == "__main__":
+    sys.path.insert(
+        0, os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    )
 
 from src.config import (CSV_FILE, INTERPOLATION_CONFIG,
                         PLOT_CONFIG, SAMPLE_PLOT_CONFIG, SAMPLE_POINTS)
