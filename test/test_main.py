@@ -80,8 +80,8 @@ class TestMainFunctions:
         x1, x2 = 0, 10
         y1, y2 = 5, 5
 
-        assert np.isclose(f(3, x1, x2, y1, y2, 0), 5)
-        assert np.isclose(f(7, x1, x2, y1, y2, 0), 5)
+        assert np.isclose(src.main.f(3, x1, x2, y1, y2, 0), 5)
+        assert np.isclose(src.main.f(7, x1, x2, y1, y2, 0), 5)
 
     def test_newton_raphson(self) -> None:
         # Test Newton-Raphson solver for simple cases
