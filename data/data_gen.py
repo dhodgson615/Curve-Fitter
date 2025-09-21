@@ -181,6 +181,7 @@ def generate() -> None:
         default=18,
         help="Base temperature in °C (default: 18)",
     )
+
     parser.add_argument(
         "--amplitude",
         type=float,
