@@ -146,7 +146,11 @@ class TestMainFunctions:
                 os.unlink(tmp.name)
 
     @mock.patch("matplotlib.pyplot.show")
-    def test_graph(self, mock_show, sample_points):
+    def test_graph(
+        self,
+        mock_show: mock.MagicMock,
+        sample_points: list[tuple[float, float]],
+    ) -> None:
         # Test graph generation
         fig = graph(points=sample_points, config={"show_plot": False})
 
