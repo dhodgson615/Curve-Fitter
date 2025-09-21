@@ -122,6 +122,7 @@ class TestMainFunctions:
 
         # Check that interpolated arrays have correct length
         expected_length = (len(sample_points) - 1) * 10 + 1
+
         assert len(x_interp) == expected_length
         assert len(y_interp) == expected_length
 
