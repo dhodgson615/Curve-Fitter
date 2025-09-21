@@ -51,7 +51,7 @@ class TestMainFunctions:
         n = src.main.newton_raphson(x1, x2, y1, y2)
 
         # Test that the function returns y1 at x1
-        assert np.isclose(f(x1, x1, x2, y1, y2, n), y1)
+        assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
 
         # Test that the function returns y2 at x2
         assert np.isclose(f(x2, x1, x2, y1, y2, n), y2)
