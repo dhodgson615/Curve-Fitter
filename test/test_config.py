@@ -83,6 +83,7 @@ class TestConfig:
             "newton_raphson_iterations",
             "newton_raphson_tolerance",
         ]
+
         for key in essential_keys:
             assert key in INTERPOLATION_CONFIG
 
