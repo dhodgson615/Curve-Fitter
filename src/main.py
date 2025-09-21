@@ -49,8 +49,7 @@ def f(
         y1 + y2
     ) / 2
 
-def f(x, x1, x2, y1, y2, n):
-    return (y2 - y1) / 2 * sin(pi * (x - x2 - n) / (x2 - x1)) + (y1 + y2) / 2
+    return np.asarray(result, dtype=np.float64)
 
 
 def newton_raphson(x1, x2, y1, y2, iters=None, tol=None):
