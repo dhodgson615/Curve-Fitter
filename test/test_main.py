@@ -89,8 +89,9 @@ class TestMainFunctions:
         y1, y2 = 0, 10
 
         # The n value should make f(x1) = y1
-        n = newton_raphson(x1, x2, y1, y2)
-        result = f(x1, x1, x2, y1, y2, n)
+        n = src.main.newton_raphson(x1, x2, y1, y2)
+        result = src.main.f(x1, x1, x2, y1, y2, n)
+
         assert np.isclose(result, y1)
 
         # Test with different values
