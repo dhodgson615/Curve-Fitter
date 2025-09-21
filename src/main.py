@@ -82,9 +82,9 @@ def newton_raphson(
         raise ValueError("Newton–Raphson derivative hit zero")
 
     n = 0.0
-    for _ in range(iters):
-        fn = (y2 - y1) / 2 * sin(pi * n / (x2 - x1)) + (y1 + y2) / 2 - y1
-        fp = (y2 - y1) / 2 * cos(pi * n / (x2 - x1)) * pi / (x2 - x1)
+    for _ in range(iterations):
+        fn = (y2 - y1) / 2 * np.sin(np.pi * n / (x2 - x1)) + (y1 + y2) / 2 - y1
+        fp = (y2 - y1) / 2 * np.cos(np.pi * n / (x2 - x1)) * np.pi / (x2 - x1)
 
         if abs(fn) < tol:
             break
