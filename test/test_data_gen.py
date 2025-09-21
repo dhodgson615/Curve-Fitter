@@ -103,7 +103,7 @@ class TestTemperatureDataGenerator:
         # Increase the tolerance to account for the random noise
         assert np.allclose(temps, expected_pattern, atol=9.0)
 
-    def test_generate_and_save(self):
+    def test_generate_and_save(self) -> None:
         # Use a temporary file to avoid creating real files
         with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
             try:
