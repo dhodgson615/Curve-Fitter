@@ -11,7 +11,7 @@ from data.data_gen import TemperatureDataGenerator
 
 class TestTemperatureDataGenerator:
     @pytest.fixture
-    def default_generator(self):
+    def default_generator(self) -> TemperatureDataGenerator:
         return TemperatureDataGenerator(
             random_seed=42
         )  # Fixed seed for reproducibility
