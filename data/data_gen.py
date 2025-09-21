@@ -143,6 +143,7 @@ class TemperatureDataGenerator:
             f"CSV file '{self.output_file}' created with {len(hours)} "
             f"temperature data points across {self.period_hours} hours"
         )
+
         return data
 
 
