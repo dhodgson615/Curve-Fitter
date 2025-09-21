@@ -8,8 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.main import (COORD_REGEX, f, graph, interpolate, load_points_from_csv,
-                      newton_raphson, parse_coords)
+import src.main
 
 matplotlib.use("Agg")  # Set matplotlib to use non-interactive backend
 
