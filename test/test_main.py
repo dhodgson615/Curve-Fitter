@@ -1,5 +1,6 @@
 import os
 import re
+import tempfile
 from unittest import mock
 
 import matplotlib
