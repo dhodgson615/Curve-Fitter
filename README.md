@@ -28,6 +28,8 @@
    pip install -r requirements.txt
    ```
 
+   **Note:** For Python 3.13+ users, ensure you have `pyparsing >= 3.2.0` to avoid deprecation warnings. The requirements.txt file specifies this version automatically.
+
 3. Run tests to verify installation:
    ```bash
    python -m pytest test/
