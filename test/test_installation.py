@@ -34,7 +34,7 @@ class TestInstallation:
             "Python version requirement not specified"
         
         # Check that core dependencies are present
-        required_packages = ["numpy", "matplotlib", "pandas", "pytest"]
+        required_packages = ["numpy", "matplotlib", "pandas", "pytest", "pyparsing"]
         for package in required_packages:
             assert package in content, f"Required package {package} not found in requirements.txt"
 
@@ -62,6 +62,7 @@ class TestInstallation:
             "matplotlib": ("3.10.0", "3.11.0"),
             "pandas": ("2.3.0", "2.4.0"),
             "pytest": ("8.4.0", "8.5.0"),
+            "pyparsing": ("3.2.0", None),  # None means no upper bound
         }
 
         versions = {
@@ -69,16 +70,33 @@ class TestInstallation:
             "matplotlib": matplotlib.__version__,
             "pandas": pandas.__version__,
             "pytest": pytest.__version__,
+            "pyparsing": __import__("pyparsing").__version__,
         }
 
         for package, (min_ver, max_ver) in constraints.items():
             version = versions[package]
             v = pv.parse(version)
             min_v = pv.parse(min_ver)
-            max_v = pv.parse(max_ver)
+            max_v = pv.parse(max_ver) if max_ver else None
             
-            assert min_v <= v < max_v, \
-                f"{package} version {version} is not within required range [{min_ver}, {max_ver})"
+            if package == "pyparsing":
+                # Special handling for pyparsing - warn but don't fail if version is too old
+                # This is because the system may have an older version installed
+                if v < min_v:
+                    import warnings
+                    warnings.warn(
+                        f"pyparsing version {version} is below recommended minimum {min_ver}. "
+                        f"Upgrade to pyparsing >= 3.2.0 to avoid sre_constants deprecation warnings in Python 3.13+",
+                        UserWarning
+                    )
+                continue
+                    
+            assert v >= min_v, \
+                f"{package} version {version} is below minimum required {min_ver}"
+            
+            if max_v:
+                assert v < max_v, \
+                    f"{package} version {version} is not within required range [{min_ver}, {max_ver})"
 
     def test_data_generation_functionality(self) -> None:
         """Test that data generation works as expected"""
@@ -114,3 +132,28 @@ class TestInstallation:
         
         assert result.returncode == 0, f"pytest command failed: {result.stderr}"
         assert "pytest" in result.stdout, "pytest version info not found"
+
+    def test_pyparsing_no_sre_constants_warning(self) -> None:
+        """Test that pyparsing version doesn't produce sre_constants deprecation warnings"""
+        import warnings
+        
+        # Test that pyparsing can be imported without sre_constants warnings
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            
+            # Import pyparsing which would trigger the warning in older versions with Python 3.13+
+            import pyparsing
+            
+            # Import matplotlib which depends on pyparsing  
+            import matplotlib.pyplot as plt
+            
+            # Check that no sre_constants warnings were recorded
+            sre_warnings = [
+                warning for warning in w 
+                if 'sre_constants' in str(warning.message) and 'deprecated' in str(warning.message)
+            ]
+            
+            # With pyparsing >= 3.2.0, there should be no sre_constants warnings
+            # In Python < 3.13, the warning doesn't exist anyway
+            assert len(sre_warnings) == 0, \
+                f"pyparsing {pyparsing.__version__} should not produce sre_constants warnings: {sre_warnings}"

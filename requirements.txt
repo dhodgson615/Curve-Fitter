@@ -15,3 +15,7 @@ pandas>=2.3.0,<2.4.0
 
 # Testing framework
 pytest>=8.4.0,<8.5.0
+
+# Explicitly specify pyparsing version to avoid sre_constants deprecation warning in Python 3.13+
+# pyparsing is a dependency of matplotlib, versions 3.2.0+ don't use deprecated sre_constants
+pyparsing>=3.2.0
