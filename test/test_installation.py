@@ -159,13 +159,12 @@ class TestInstallation:
         # Test that pyparsing can be imported without sre_constants warnings
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
-            
-            # Import pyparsing which would trigger the warning in older versions with Python 3.13+
+
+            # Import pyparsing which would trigger the warning in older
+            # versions with Python 3.13+
+            # Import matplotlib which depends on pyparsing
             import pyparsing
-            
-            # Import matplotlib which depends on pyparsing  
-            import matplotlib.pyplot as plt
-            
+
             # Check that no sre_constants warnings were recorded
             sre_warnings = [
                 warning
