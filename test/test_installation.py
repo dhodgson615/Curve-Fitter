@@ -106,15 +106,27 @@ class TestInstallation:
             output_file = os.path.join(temp_dir, "test_output.csv")
 
             # Run data generation
-            result = subprocess.run([
-                sys.executable, "data/data_gen.py",
-                "--points", "5",
-                "--output", output_file
-            ], capture_output=True, text=True)
-            
-            assert result.returncode == 0, f"Data generation failed: {result.stderr}"
-            assert os.path.exists(output_file), "Output CSV file was not created"
-            
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    "data/data_gen.py",
+                    "--points",
+                    "5",
+                    "--output",
+                    output_file,
+                ],
+                capture_output=True,
+                text=True,
+            )
+
+            assert (
+                result.returncode == 0
+            ), f"Data generation failed: {result.stderr}"
+
+            assert os.path.exists(
+                output_file
+            ), "Output CSV file was not created"
+
             # Check file content
             with open(output_file, "r") as f:
                 lines = f.readlines()
