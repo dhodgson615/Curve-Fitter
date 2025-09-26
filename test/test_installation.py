@@ -30,7 +30,14 @@ class TestInstallation:
             "Python version requirement not specified"
         
         # Check that core dependencies are present
-        required_packages = ["numpy", "matplotlib", "pandas", "pytest", "pyparsing"]
+        required_packages = [
+            "numpy",
+            "matplotlib",
+            "pandas",
+            "pytest",
+            "pyparsing",
+        ]
+
         for package in required_packages:
             assert (
                 package in content
