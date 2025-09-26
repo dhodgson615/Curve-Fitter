@@ -37,6 +37,7 @@ class TestInstallation:
     def test_dependencies_importable(self) -> None:
         """Test that all required dependencies can be imported"""
         try:
+            import matplotlib
             import numpy
             import pandas
             import pytest
