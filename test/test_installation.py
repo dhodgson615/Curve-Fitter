@@ -138,11 +138,16 @@ class TestInstallation:
 
     def test_pytest_functionality(self) -> None:
         """Test that pytest works correctly with the current setup"""
-        result = subprocess.run([
-            sys.executable, "-m", "pytest", "--version"
-        ], capture_output=True, text=True)
-        
-        assert result.returncode == 0, f"pytest command failed: {result.stderr}"
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", "--version"],
+            capture_output=True,
+            text=True,
+        )
+
+        assert (
+            result.returncode == 0
+        ), f"pytest command failed: {result.stderr}"
+
         assert "pytest" in result.stdout, "pytest version info not found"
 
     def test_pyparsing_no_sre_constants_warning(self) -> None:
