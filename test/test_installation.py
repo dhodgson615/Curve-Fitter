@@ -104,7 +104,7 @@ class TestInstallation:
 
         with tempfile.TemporaryDirectory() as temp_dir:
             output_file = os.path.join(temp_dir, "test_output.csv")
-            
+
             # Run data generation
             result = subprocess.run([
                 sys.executable, "data/data_gen.py",
