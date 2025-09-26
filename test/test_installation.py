@@ -26,9 +26,10 @@ class TestInstallation:
             "Install instructions not found in requirements.txt"
         
         # Check for Python version requirement
-        assert "Python 3.12" in content, \
-            "Python version requirement not specified"
-        
+        assert (
+            "Python 3.12" in content
+        ), "Python version requirement not specified"
+
         # Check that core dependencies are present
         required_packages = [
             "numpy",
