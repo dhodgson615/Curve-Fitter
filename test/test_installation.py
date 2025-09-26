@@ -74,7 +74,7 @@ class TestInstallation:
             v = pv.parse(version)
             min_v = pv.parse(min_ver)
             max_v = pv.parse(max_ver) if max_ver else None
-            
+
             if package == "pyparsing":
                 # Special handling for pyparsing - warn but don't fail if version is too old
                 # This is because the system may have an older version installed
