@@ -116,7 +116,7 @@ class TestInstallation:
             assert os.path.exists(output_file), "Output CSV file was not created"
             
             # Check file content
-            with open(output_file, 'r') as f:
+            with open(output_file, "r") as f:
                 lines = f.readlines()
                 assert len(lines) > 1, "CSV file should have header and data"
                 assert "Time" in lines[0] and "Temperature" in lines[0], \
