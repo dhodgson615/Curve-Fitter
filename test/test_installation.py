@@ -101,8 +101,7 @@ class TestInstallation:
         import os
         import subprocess
         import tempfile
-        import os
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             output_file = os.path.join(temp_dir, "test_output.csv")
             
