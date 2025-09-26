@@ -78,7 +78,8 @@ class TestInstallation:
             if package == "pyparsing":
                 # Special handling for pyparsing
                 # Warn but don't fail if version is too old
-                # This is because the system may have an older version installed
+                # This is because the system may have an older version
+                # installed
                 if v < min_v:
                     import warnings
 
