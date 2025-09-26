@@ -22,9 +22,10 @@ class TestInstallation:
         content = requirements_file.read_text()
 
         # Check for install instructions
-        assert "pip install -r requirements.txt" in content, \
-            "Install instructions not found in requirements.txt"
-        
+        assert (
+            "pip install -r requirements.txt" in content
+        ), "Install instructions not found in requirements.txt"
+
         # Check for Python version requirement
         assert (
             "Python 3.12" in content
