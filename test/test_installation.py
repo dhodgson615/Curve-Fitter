@@ -1,6 +1,3 @@
-"""
-Test installation and dependency verification
-"""
 import subprocess
 import sys
 from pathlib import Path
