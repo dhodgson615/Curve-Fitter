@@ -20,7 +20,7 @@ class TestInstallation:
         """Test that requirements.txt has proper format and comments"""
         requirements_file = Path("requirements.txt")
         content = requirements_file.read_text()
-        
+
         # Check for install instructions
         assert "pip install -r requirements.txt" in content, \
             "Install instructions not found in requirements.txt"
