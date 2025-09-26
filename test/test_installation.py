@@ -171,8 +171,8 @@ class TestInstallation:
                 warning for warning in w 
                 if 'sre_constants' in str(warning.message) and 'deprecated' in str(warning.message)
             ]
-            
-            # With pyparsing >= 3.2.0, there should be no sre_constants warnings
+
+            # In pyparsing >= 3.2.0, there shouldn't be sre_constants warnings
             # In Python < 3.13, the warning doesn't exist anyway
             assert len(sre_warnings) == 0, (
                 f"pyparsing {pyparsing.__version__} should not produce "
