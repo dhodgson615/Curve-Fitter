@@ -155,7 +155,7 @@ class TestInstallation:
         deprecation warnings
         """
         import warnings
-        
+
         # Test that pyparsing can be imported without sre_constants warnings
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
