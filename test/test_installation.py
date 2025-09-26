@@ -32,7 +32,9 @@ class TestInstallation:
         # Check that core dependencies are present
         required_packages = ["numpy", "matplotlib", "pandas", "pytest", "pyparsing"]
         for package in required_packages:
-            assert package in content, f"Required package {package} not found in requirements.txt"
+            assert (
+                package in content
+            ), f"Required package {package} not found in requirements.txt"
 
     def test_dependencies_importable(self) -> None:
         """Test that all required dependencies can be imported"""
