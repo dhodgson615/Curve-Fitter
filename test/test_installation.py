@@ -47,6 +47,8 @@ class TestInstallation:
     def test_version_constraints(self) -> None:
         """Test that installed versions meet requirements constraints"""
         import matplotlib
+        import numpy
+        import packaging.version as pv
         import pandas
         import pytest
         import packaging.version as pv
