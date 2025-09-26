@@ -82,9 +82,11 @@ class TestInstallation:
                     import warnings
 
                     warnings.warn(
-                        f"pyparsing version {version} is below recommended minimum {min_ver}. "
-                        f"Upgrade to pyparsing >= 3.2.0 to avoid sre_constants deprecation warnings in Python 3.13+",
-                        UserWarning
+                        f"pyparsing version {version} is below recommended "
+                        f"minimum {min_ver}. Upgrade to pyparsing >= 3.2.0 to "
+                        f"avoid sre_constants deprecation warnings in Python "
+                        f"3.13+",
+                        UserWarning,
                     )
 
                 continue
