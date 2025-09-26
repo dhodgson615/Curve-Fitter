@@ -151,7 +151,9 @@ class TestInstallation:
         assert "pytest" in result.stdout, "pytest version info not found"
 
     def test_pyparsing_no_sre_constants_warning(self) -> None:
-        """Test that pyparsing version doesn't produce sre_constants deprecation warnings"""
+        """Test that pyparsing version doesn't produce sre_constants
+        deprecation warnings
+        """
         import warnings
         
         # Test that pyparsing can be imported without sre_constants warnings
