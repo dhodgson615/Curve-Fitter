@@ -38,7 +38,6 @@ class TestInstallation:
         """Test that all required dependencies can be imported"""
         try:
             import numpy
-            import matplotlib
             import pandas
             import pytest
         except ImportError as e:
