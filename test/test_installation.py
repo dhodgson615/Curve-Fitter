@@ -11,7 +11,7 @@ class TestInstallation:
         requirements_file = Path("requirements.txt")
         assert requirements_file.exists(), "requirements.txt file not found"
         assert requirements_file.is_file(), "requirements.txt is not a file"
-        
+
         # Check that file is not empty
         content = requirements_file.read_text()
         assert len(content.strip()) > 0, "requirements.txt is empty"
