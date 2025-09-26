@@ -131,8 +131,10 @@ class TestInstallation:
             with open(output_file, "r") as f:
                 lines = f.readlines()
                 assert len(lines) > 1, "CSV file should have header and data"
-                assert "Time" in lines[0] and "Temperature" in lines[0], \
-                    "CSV header should contain Time and Temperature columns"
+
+                assert (
+                    "Time" in lines[0] and "Temperature" in lines[0]
+                ), "CSV header should contain Time and Temperature columns"
 
     def test_pytest_functionality(self) -> None:
         """Test that pytest works correctly with the current setup"""
