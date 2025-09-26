@@ -174,5 +174,7 @@ class TestInstallation:
             
             # With pyparsing >= 3.2.0, there should be no sre_constants warnings
             # In Python < 3.13, the warning doesn't exist anyway
-            assert len(sre_warnings) == 0, \
-                f"pyparsing {pyparsing.__version__} should not produce sre_constants warnings: {sre_warnings}"
+            assert len(sre_warnings) == 0, (
+                f"pyparsing {pyparsing.__version__} should not produce "
+                f"sre_constants warnings: {sre_warnings}"
+            )
