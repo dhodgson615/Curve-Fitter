@@ -51,7 +51,6 @@ class TestInstallation:
         import packaging.version as pv
         import pandas
         import pytest
-        import packaging.version as pv
 
         # Define expected version ranges based on requirements.txt
         constraints = {
