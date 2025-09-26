@@ -40,6 +40,7 @@ class TestInstallation:
             import numpy
             import pandas
             import pytest
+
         except ImportError as e:
             assert False, f"Required dependency cannot be imported: {e}"
 
