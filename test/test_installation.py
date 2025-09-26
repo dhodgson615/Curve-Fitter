@@ -98,6 +98,7 @@ class TestInstallation:
 
     def test_data_generation_functionality(self) -> None:
         """Test that data generation works as expected"""
+        import os
         import subprocess
         import tempfile
         import os
