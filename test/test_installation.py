@@ -93,8 +93,10 @@ class TestInstallation:
                 f"{package} version {version} is below minimum required {min_ver}"
             
             if max_v:
-                assert v < max_v, \
-                    f"{package} version {version} is not within required range [{min_ver}, {max_ver})"
+                assert v < max_v, (
+                    f"{package} version {version} is not within required range "
+                    f"[{min_ver}, {max_ver})"
+                )
 
     def test_data_generation_functionality(self) -> None:
         """Test that data generation works as expected"""
