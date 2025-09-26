@@ -168,8 +168,10 @@ class TestInstallation:
             
             # Check that no sre_constants warnings were recorded
             sre_warnings = [
-                warning for warning in w 
-                if 'sre_constants' in str(warning.message) and 'deprecated' in str(warning.message)
+                warning
+                for warning in w
+                if "sre_constants" in str(warning.message)
+                and "deprecated" in str(warning.message)
             ]
 
             # In pyparsing >= 3.2.0, there shouldn't be sre_constants warnings
