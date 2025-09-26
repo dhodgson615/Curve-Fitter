@@ -80,6 +80,7 @@ class TestInstallation:
                 # This is because the system may have an older version installed
                 if v < min_v:
                     import warnings
+
                     warnings.warn(
                         f"pyparsing version {version} is below recommended minimum {min_ver}. "
                         f"Upgrade to pyparsing >= 3.2.0 to avoid sre_constants deprecation warnings in Python 3.13+",
