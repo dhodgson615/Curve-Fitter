@@ -50,7 +50,7 @@ class TestTemperatureDataGenerator:
         self, default_generator: TemperatureDataGenerator
     ) -> None:
         default_generator.interval_type = "regular"
-        times = default_generator.generate_time_points()
+        times = default_generator.gen_t_pts()
 
         assert len(times) == default_generator.num_points
         assert times[0] == 0
@@ -63,7 +63,7 @@ class TestTemperatureDataGenerator:
         self, default_generator: TemperatureDataGenerator
     ) -> None:
         default_generator.interval_type = "random"
-        times = default_generator.generate_time_points()
+        times = default_generator.gen_t_pts()
 
         assert len(times) == default_generator.num_points
         assert times[0] >= 0
@@ -75,7 +75,7 @@ class TestTemperatureDataGenerator:
         self, default_generator: TemperatureDataGenerator
     ) -> None:
         default_generator.interval_type = "weighted"
-        times = default_generator.generate_time_points()
+        times = default_generator.gen_t_pts()
 
         assert len(times) == default_generator.num_points
         assert np.min(times) >= 0
@@ -88,13 +88,13 @@ class TestTemperatureDataGenerator:
     ) -> None:
         default_generator.interval_type = "invalid"
         with pytest.raises(ValueError, match="Unknown interval type: invalid"):
-            default_generator.generate_time_points()
+            default_generator.gen_t_pts()
 
     def test_generate_temperatures(
         self, default_generator: TemperatureDataGenerator
     ) -> None:
         hours = np.array([0, 6, 12, 18, 24])
-        temps = default_generator.generate_temperatures(hours)
+        temps = default_generator.gen_temps(hours)
 
         assert len(temps) == len(hours)
         # With the seed set and known values, we can test for specific outputs
