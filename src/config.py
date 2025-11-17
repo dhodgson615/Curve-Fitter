@@ -1,4 +1,3 @@
-# Default plot styling configuration
 PLOT_CONFIG = {
     "plot_style": "dark_background",
     "figsize": (10, 6),
@@ -18,13 +17,10 @@ PLOT_CONFIG = {
     "input_prompt": "Coordinates e.g. (1, 2), (3, 4): ",
 }
 
-# CSV configuration
 CSV_FILE = "../data/data_points.csv"
 
-# Default sample points if CSV is not found
 SAMPLE_POINTS = [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
 
-# Configuration for CSV data visualization
 CSV_PLOT_CONFIG = {
     "plot_style": "dark_background",
     "figsize": (12, 8),
@@ -34,7 +30,6 @@ CSV_PLOT_CONFIG = {
     "show_grid": True,
 }
 
-# Configuration for sample data visualization
 SAMPLE_PLOT_CONFIG = {
     "plot_style": "dark_background",
     "figsize": (12, 8),
@@ -46,7 +41,6 @@ SAMPLE_PLOT_CONFIG = {
     "regenerate_points": True,
 }
 
-# Interpolation settings
 INTERPOLATION_CONFIG = {
     "points_per_segment": 250,
     "newton_raphson_iterations": 30,
