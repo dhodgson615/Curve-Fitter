@@ -58,6 +58,8 @@ def newton_raphson(
     tol: Optional[float] = None,
 ) -> float:
     """Find adjustment value n using Newton-Raphson method"""
+    assert x2 != x1, "Newton–Raphson derivative hit 0"
+
     iterations: int = (
         iters
         if iters is not None
@@ -70,20 +72,17 @@ def newton_raphson(
         else float(INTERPOLATION_CONFIG["newton_raphson_tolerance"])
     )
 
-    if x2 == x1:
-        raise ValueError("Newton–Raphson derivative hit zero")
-
     n = 0.0
 
     for _ in range(iterations):
-        fn = (y2 - y1) / 2 * sin(pi * n / (x2 - x1)) + (y1 + y2) / 2 - y1
-        fp = (y2 - y1) / 2 * cos(pi * n / (x2 - x1)) * pi / (x2 - x1)
+        a, dx, t = (y2 - y1) / 2, x2 - x1, pi * n / (x2 - x1)
+        fn, fp = a * sin(t) + (y1 + y2) / 2 - y1, a * cos(t) * pi / dx
 
         if abs(fn) < tolerance:
             break
 
         if fp == 0:
-            raise ValueError("Newton–Raphson derivative hit zero")
+            raise ValueError("Newton–Raphson derivative hit 0")
 
         n -= fn / fp
 
