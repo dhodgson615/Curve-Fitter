@@ -7,75 +7,104 @@ from numpy.typing import NDArray
 from pandas import DataFrame
 
 
+def _regular_pts(period_hours: float, num_points: int) -> NDArray[float64]:
+    return linspace(0, period_hours, num_points, dtype=float64)
+
+
+def _random_points(period_hours: float, num_points: int) -> NDArray[float64]:
+    return array(
+        sorted(
+            float(x) for x in uniform(0, period_hours, max(0, num_points - 1))
+        )
+        + [period_hours],
+        dtype=float64,
+    )
+
+
+def _build_day_segs(period_hours: float) -> dict[str, tuple[float, float]]:
+    return {
+        key: (
+            (value[0] * (period_hours / 24), value[1] * (period_hours / 24))
+            if period_hours != 24
+            else value
+        )
+        for key, value in {
+            "early_morning": (0, 6),
+            "morning": (6, 12),
+            "afternoon": (12, 18),
+            "night": (18, 24),
+        }.items()
+    }
+
+
+def _compute_pts_per_seg(
+    day_segs: dict[str, tuple[float, float]],
+    weights: dict[str, float],
+    num_points: int,
+) -> dict[str, int]:
+    pts_per_seg = {
+        seg: max(1, int(weights.get(seg, 0) * num_points)) for seg in day_segs
+    }
+
+    diff = num_points - sum(pts_per_seg.values())
+
+    if diff != 0:
+        keys = list(pts_per_seg.keys())
+
+        for i in range(abs(diff)):
+            pts_per_seg[keys[i % len(keys)]] += 1 if diff > 0 else -1
+
+    return pts_per_seg
+
+
+def _weighted_pts(period_hours: float, num_points: int) -> NDArray[float64]:
+    day_segs = _build_day_segs(period_hours)
+
+    weights: dict[str, float] = {
+        "early_morning": 0.15,
+        "morning": 0.3,
+        "afternoon": 0.3,
+        "night": 0.25,
+    }
+
+    pts_per_seg = _compute_pts_per_seg(day_segs, weights, num_points)
+    pts = []
+
+    for seg, (start, end) in day_segs.items():
+        n = pts_per_seg.get(seg, 0)
+
+        if n > 0:
+            samples = sorted(uniform(start, end, n))
+            pts.extend(float(x) for x in samples)
+
+    return array(sorted(pts), dtype=float64)
+
+
 def generate_time_points(
     period_hours: float = 24,
     num_points: int = 25,
     interval_type: str = "regular",  # 'regular', 'random', 'weighted'
 ) -> NDArray[float64]:
-    """Generate time points based on specified interval type"""
-    assert interval_type in [
+    """Generate time points based on specified interval type (drop-in replacement)."""
+    assert interval_type in (
         "regular",
         "random",
         "weighted",
-    ], f"Unknown interval type: {interval_type}"
+    ), f"Unknown interval type: {interval_type}"
 
-    if interval_type == "regular":
-        return linspace(0, period_hours, num_points, dtype=float64)
-
-    elif interval_type == "random":
-        random_values = uniform(0, period_hours, num_points - 1)
-        random_values_list = [float(x) for x in random_values]
-        random_times = sorted(random_values_list)
-        return array(random_times + [period_hours], dtype=float64)
-
-    elif interval_type == "weighted":
-        # More readings during day, fewer at night
-        day_segs: dict[str, tuple[float, float]] = {
-            "early_morning": (0, 6),  # Fewer readings
-            "morning": (6, 12),  # More readings
-            "afternoon": (12, 18),  # More readings
-            "night": (18, 24),  # Fewer readings
-        }
-
-        if period_hours != 24:
-            scale = period_hours / 24
-
-            day_segs = {
-                k: (v[0] * scale, v[1] * scale) for k, v in day_segs.items()
-            }
-
-        weights: dict[str, float] = {
-            "early_morning": 0.15,
-            "morning": 0.3,
-            "afternoon": 0.3,
-            "night": 0.25,
-        }
-
-        pts_per_seg = {
-            seg: max(1, int(weights[seg] * num_points)) for seg in day_segs
-        }
-
-        diff = num_points - sum(pts_per_seg.values())
-
-        if diff != 0:
-            keys = list(pts_per_seg.keys())
-
-            for i in range(abs(diff)):
-                pts_per_seg[keys[i % len(keys)]] += 1 if diff > 0 else -1
-
-        return array(
-            sorted(
-                [
-                    float(x)
-                    for seg, (start, end) in day_segs.items()
-                    if pts_per_seg[seg] > 0
-                    for x in sorted(uniform(start, end, pts_per_seg[seg]))
-                ]
-            ),
-            dtype=float64,
+    return (
+        _regular_pts(period_hours, num_points)
+        if interval_type == "regular"
+        else (
+            _random_points(period_hours, num_points)
+            if interval_type == "random"
+            else (
+                _weighted_pts(period_hours, num_points)
+                if interval_type == "weighted"
+                else array([], dtype=float64)
+            )
         )
-
-    return array([], dtype=float64)
+    )
 
 
 def generate_temperatures(
@@ -86,14 +115,11 @@ def generate_temperatures(
     noise_std: float = 1.2,
 ) -> NDArray[float64]:
     """Generate temperature values for given hours"""
-    temps = base_temp + amplitude * sin(
-        (hours * (24 / period_hours) - 6) * pi / 12
+    return (
+        base_temp
+        + amplitude * sin(2 * pi * hours / period_hours - pi / 2)
+        + normal(0, noise_std, hours.size)
     )
-
-    noise = normal(0, noise_std, hours.size)
-    temps += noise
-
-    return temps
 
 
 def generate_and_save(
@@ -111,9 +137,11 @@ def generate_and_save(
         seed(random_seed)
 
     hours = generate_time_points(period_hours, num_points, interval_type)
+
     temps = generate_temperatures(
         hours, base_temp, amplitude, period_hours, noise_std
     )
+
     data = DataFrame({"Time (hours)": hours, "Temperature (°C)": temps})
     data.to_csv(output_file, index=False)
 
