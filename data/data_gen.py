@@ -1,10 +1,10 @@
-import argparse
-import typing
+from argparse import ArgumentParser
+from typing import Optional
 
-import numpy as np
-import numpy.random
-import numpy.typing as npt
-import pandas
+from numpy import array, float64, linspace, pi, sin
+from numpy.random import normal, seed, uniform
+from numpy.typing import NDArray
+from pandas import DataFrame
 
 
 class TemperatureDataGenerator:
@@ -16,7 +16,7 @@ class TemperatureDataGenerator:
         base_temp: float = 18,
         amplitude: float = 7,
         noise_std: float = 1.2,
-        random_seed: typing.Optional[int] = None,
+        random_seed: Optional[int] = None,
         output_file: str = "data_points.csv",
     ) -> None:
         """Initialize temperature data generator with configurable
@@ -30,39 +30,31 @@ class TemperatureDataGenerator:
         self.noise_std = noise_std
         self.output_file = output_file
 
-        # Set random seed if provided
         if random_seed is not None:
-            numpy.random.seed(random_seed)
+            seed(random_seed)
 
-    def generate_time_points(self) -> npt.NDArray[np.float64]:
+    def generate_time_points(self) -> NDArray[float64]:
         """Generate time points based on specified interval type"""
         if self.interval_type == "regular":
-            return np.linspace(
-                0, self.period_hours, self.num_points, dtype=np.float64
+            return linspace(
+                0, self.period_hours, self.num_points, dtype=float64
             )
 
         elif self.interval_type == "random":
-            random_values = numpy.random.uniform(
-                0, self.period_hours, self.num_points - 1
-            )
-
+            random_values = uniform(0, self.period_hours, self.num_points - 1)
             random_values_list = [float(x) for x in random_values]
             random_times = sorted(random_values_list)
-
-            return np.array(
-                random_times + [self.period_hours], dtype=np.float64
-            )
+            return array(random_times + [self.period_hours], dtype=float64)
 
         elif self.interval_type == "weighted":
             # More readings during day, fewer at night
-            day_segments: dict[str, typing.Tuple[float, float]] = {
+            day_segments: dict[str, tuple[float, float]] = {
                 "early_morning": (0, 6),  # Fewer readings
                 "morning": (6, 12),  # More readings
                 "afternoon": (12, 18),  # More readings
                 "night": (18, 24),  # Fewer readings
             }
 
-            # Adjust segments if period is not 24 hours
             if self.period_hours != 24:
                 scale = self.period_hours / 24
 
@@ -71,7 +63,6 @@ class TemperatureDataGenerator:
                     for k, v in day_segments.items()
                 }
 
-            # Assign points to segments based on weights
             weights: dict[str, float] = {
                 "early_morning": 0.15,
                 "morning": 0.3,
@@ -79,63 +70,57 @@ class TemperatureDataGenerator:
                 "night": 0.25,
             }
 
-            points_per_segment = {
+            pts_per_seg = {
                 seg: max(1, int(weights[seg] * self.num_points))
                 for seg in day_segments
             }
 
-            # Adjust if the sum doesn't match the required number of points
-            total = sum(points_per_segment.values())
+            total = sum(pts_per_seg.values())
             diff = self.num_points - total
 
             if diff != 0:
-                keys = list(points_per_segment.keys())
+                keys = list(pts_per_seg.keys())
 
                 for i in range(abs(diff)):
-                    idx = i % len(keys)
-                    points_per_segment[keys[idx]] += 1 if diff > 0 else -1
+                    pts_per_seg[keys[i % len(keys)]] += 1 if diff > 0 else -1
 
-            # Generate points within each segment
-            time_points: typing.List[float] = []
+            time_points: list[float] = []
             for seg, (start, end) in day_segments.items():
-                count = points_per_segment[seg]
+                count = pts_per_seg[seg]
 
                 if count > 0:
-                    np_array = numpy.random.uniform(start, end, count)
+                    np_array = uniform(start, end, count)
                     float_values = [float(x) for x in np_array]
                     segment_times = sorted(float_values)
                     time_points.extend(segment_times)
 
-            return np.array(sorted(time_points), dtype=np.float64)
+            return array(sorted(time_points), dtype=float64)
 
         else:
             raise ValueError(f"Unknown interval type: {self.interval_type}")
 
     def generate_temperatures(
-        self, hours: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+        self, hours: NDArray[float64]
+    ) -> NDArray[float64]:
         """Generate temperature values for given hours"""
-        # Scale the sine function to match the period
         scale_factor = 24 / self.period_hours
 
-        temps = self.base_temp + self.amplitude * np.sin(
-            (hours * scale_factor - 6) * np.pi / 12
+        temps = self.base_temp + self.amplitude * sin(
+            (hours * scale_factor - 6) * pi / 12
         )
 
-        noise = numpy.random.normal(0, self.noise_std, hours.size)
+        noise = normal(0, self.noise_std, hours.size)
         temps += noise
 
         return temps
 
-    def generate_and_save(self) -> pandas.DataFrame:
+    def generate_and_save(self) -> DataFrame:
         """Generate data and save to CSV file"""
         hours = self.generate_time_points()
         temps = self.generate_temperatures(hours)
 
         # Create DataFrame and save to CSV
-        data = pandas.DataFrame(
-            {"Time (hours)": hours, "Temperature (°C)": temps}
-        )
+        data = DataFrame({"Time (hours)": hours, "Temperature (°C)": temps})
 
         data.to_csv(self.output_file, index=False)
 
@@ -149,9 +134,7 @@ class TemperatureDataGenerator:
 
 def generate() -> None:
     """Parse command line arguments and generate data"""
-    parser = argparse.ArgumentParser(
-        description="Generate synthetic temperature data"
-    )
+    parser = ArgumentParser(description="Generate synthetic temperature data")
 
     parser.add_argument(
         "--period",
