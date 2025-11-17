@@ -48,7 +48,7 @@ class TestMainFunctions:
         y1, y2 = 0, 10
 
         # Calculate the adjustment needed to make the curve pass through points
-        n = src.main.newton_raphson(x1, x2, y1, y2)
+        n = src.main.adjust_n(x1, x2, y1, y2)
 
         # Test that the function returns y1 at x1
         assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
@@ -63,7 +63,7 @@ class TestMainFunctions:
         # Test case 3: Negative values
         x1, x2 = -3, -1
         y1, y2 = -5, -2
-        n = src.main.newton_raphson(x1, x2, y1, y2)
+        n = src.main.adjust_n(x1, x2, y1, y2)
 
         assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
         assert np.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
@@ -71,7 +71,7 @@ class TestMainFunctions:
         # Test case 4: Mixed positive and negative values
         x1, x2 = -5, 5
         y1, y2 = -10, 10
-        n = src.main.newton_raphson(x1, x2, y1, y2)
+        n = src.main.adjust_n(x1, x2, y1, y2)
 
         assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
         assert np.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
@@ -89,7 +89,7 @@ class TestMainFunctions:
         y1, y2 = 0, 10
 
         # The n value should make f(x1) = y1
-        n = src.main.newton_raphson(x1, x2, y1, y2)
+        n = src.main.adjust_n(x1, x2, y1, y2)
         result = src.main.f(x1, x1, x2, y1, y2, n)
 
         assert np.isclose(result, y1)
@@ -97,7 +97,7 @@ class TestMainFunctions:
         # Test with different values
         x1, x2 = 1, 3
         y1, y2 = 5, 15
-        n = src.main.newton_raphson(x1, x2, y1, y2)
+        n = src.main.adjust_n(x1, x2, y1, y2)
         result = src.main.f(x1, x1, x2, y1, y2, n)
 
         assert np.isclose(result, y1)
@@ -110,7 +110,7 @@ class TestMainFunctions:
         with pytest.raises(
             ValueError, match="Newton–Raphson derivative hit zero"
         ):
-            src.main.newton_raphson(x1, x2, y1, y2)
+            src.main.adjust_n(x1, x2, y1, y2)
 
     def test_interpolate(
         self, sample_points: list[tuple[float, float]]
@@ -169,7 +169,7 @@ class TestMainFunctions:
         sample_points: list[tuple[float, float]],
     ) -> None:
         # Test graph generation
-        fig = src.main.graph(points=sample_points, config={"show_plot": False})
+        fig = src.main.graph(pts=sample_points, config={"show_plot": False})
 
         # Check that a figure was created
         assert isinstance(fig, matplotlib.figure.Figure)
@@ -178,7 +178,7 @@ class TestMainFunctions:
         mock_show.assert_not_called()
 
         # Test with show_plot=True
-        fig = src.main.graph(points=sample_points, config={"show_plot": True})
+        fig = src.main.graph(pts=sample_points, config={"show_plot": True})
         mock_show.assert_called_once()
 
         # Clean up

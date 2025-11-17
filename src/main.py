@@ -49,7 +49,7 @@ def f(
     return asarray(result, dtype=float64)
 
 
-def newton_raphson(
+def adjust_n(
     x1: float,
     x2: float,
     y1: float,
@@ -93,7 +93,7 @@ def interpolate(
     pts: list[tuple[float, float]], pts_per_seg: Optional[int] = None
 ) -> tuple[NDArray[float64], NDArray[float64]]:
     """Interpolate a smooth curve through the given points"""
-    points_per_segment: int = (
+    pts_per_seg: int = (
         pts_per_seg
         if pts_per_seg is not None
         else int(INTERPOLATION_CONFIG["points_per_segment"])
@@ -106,12 +106,8 @@ def interpolate(
     for i in range(len(pts) - 1):
         x1, y1 = pts[i]
         x2, y2 = pts[i + 1]
-
-        seg_x = linspace(
-            x1, x2, points_per_segment, endpoint=False, dtype=float64
-        )
-
-        seg_y = f(seg_x, x1, x2, y1, y2, newton_raphson(x1, x2, y1, y2))
+        seg_x = linspace(x1, x2, pts_per_seg, endpoint=False, dtype=float64)
+        seg_y = f(seg_x, x1, x2, y1, y2, adjust_n(x1, x2, y1, y2))
         xs_out.extend(seg_x)
         ys_out.extend(seg_y)
 
@@ -132,7 +128,7 @@ def load_points_from_csv(
 
 
 def graph(
-    points: Optional[list[tuple[float, float]]] = None,
+    pts: Optional[list[tuple[float, float]]] = None,
     config: Optional[dict[str, Any]] = None,
 ) -> Figure:
     """Create a graph from interpolated points"""
@@ -141,11 +137,8 @@ def graph(
     if config:
         cfg.update(config)
 
-    points = (
-        parse_coords(input(cfg["input_prompt"])) if points is None else points
-    )
-
-    x, y = interpolate(points)
+    pts = parse_coords(input(cfg["input_prompt"])) if pts is None else pts
+    x, y = interpolate(pts)
     use(str(cfg["plot_style"]))
     fig = figure(figsize=cast(tuple[float, float], cfg["figsize"]))
 
@@ -159,7 +152,7 @@ def graph(
         alpha=float(cfg["alpha"]),
     )
 
-    x_points, y_points = zip(*points)
+    x_points, y_points = zip(*pts)
 
     scatter(
         x_points,
