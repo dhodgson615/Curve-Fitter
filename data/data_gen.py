@@ -7,129 +7,122 @@ from numpy.typing import NDArray
 from pandas import DataFrame
 
 
-class TemperatureDataGenerator:
-    def __init__(
-        self,
-        period_hours: float = 24,
-        num_points: int = 25,
-        interval_type: str = "regular",  # 'regular', 'random', 'weighted'
-        base_temp: float = 18,
-        amplitude: float = 7,
-        noise_std: float = 1.2,
-        random_seed: Optional[int] = None,
-        output_file: str = "data_points.csv",
-    ) -> None:
-        """Initialize temperature data generator with configurable
-        parameters
-        """
-        self.period_hours = period_hours
-        self.num_points = num_points
-        self.interval_type = interval_type
-        self.base_temp = base_temp
-        self.amplitude = amplitude
-        self.noise_std = noise_std
-        self.output_file = output_file
+def generate_time_points(
+    period_hours: float = 24,
+    num_points: int = 25,
+    interval_type: str = "regular",  # 'regular', 'random', 'weighted'
+) -> NDArray[float64]:
+    """Generate time points based on specified interval type"""
+    assert interval_type in [
+        "regular",
+        "random",
+        "weighted",
+    ], f"Unknown interval type: {interval_type}"
 
-        if random_seed is not None:
-            seed(random_seed)
+    if interval_type == "regular":
+        return linspace(0, period_hours, num_points, dtype=float64)
 
-    def generate_time_points(self) -> NDArray[float64]:
-        """Generate time points based on specified interval type"""
-        if self.interval_type == "regular":
-            return linspace(
-                0, self.period_hours, self.num_points, dtype=float64
-            )
+    elif interval_type == "random":
+        random_values = uniform(0, period_hours, num_points - 1)
+        random_values_list = [float(x) for x in random_values]
+        random_times = sorted(random_values_list)
+        return array(random_times + [period_hours], dtype=float64)
 
-        elif self.interval_type == "random":
-            random_values = uniform(0, self.period_hours, self.num_points - 1)
-            random_values_list = [float(x) for x in random_values]
-            random_times = sorted(random_values_list)
-            return array(random_times + [self.period_hours], dtype=float64)
+    elif interval_type == "weighted":
+        # More readings during day, fewer at night
+        day_segs: dict[str, tuple[float, float]] = {
+            "early_morning": (0, 6),  # Fewer readings
+            "morning": (6, 12),  # More readings
+            "afternoon": (12, 18),  # More readings
+            "night": (18, 24),  # Fewer readings
+        }
 
-        elif self.interval_type == "weighted":
-            # More readings during day, fewer at night
-            day_segments: dict[str, tuple[float, float]] = {
-                "early_morning": (0, 6),  # Fewer readings
-                "morning": (6, 12),  # More readings
-                "afternoon": (12, 18),  # More readings
-                "night": (18, 24),  # Fewer readings
+        if period_hours != 24:
+            scale = period_hours / 24
+
+            day_segs = {
+                k: (v[0] * scale, v[1] * scale) for k, v in day_segs.items()
             }
 
-            if self.period_hours != 24:
-                scale = self.period_hours / 24
+        weights: dict[str, float] = {
+            "early_morning": 0.15,
+            "morning": 0.3,
+            "afternoon": 0.3,
+            "night": 0.25,
+        }
 
-                day_segments = {
-                    k: (v[0] * scale, v[1] * scale)
-                    for k, v in day_segments.items()
-                }
+        pts_per_seg = {
+            seg: max(1, int(weights[seg] * num_points)) for seg in day_segs
+        }
 
-            weights: dict[str, float] = {
-                "early_morning": 0.15,
-                "morning": 0.3,
-                "afternoon": 0.3,
-                "night": 0.25,
-            }
+        diff = num_points - sum(pts_per_seg.values())
 
-            pts_per_seg = {
-                seg: max(1, int(weights[seg] * self.num_points))
-                for seg in day_segments
-            }
+        if diff != 0:
+            keys = list(pts_per_seg.keys())
 
-            total = sum(pts_per_seg.values())
-            diff = self.num_points - total
+            for i in range(abs(diff)):
+                pts_per_seg[keys[i % len(keys)]] += 1 if diff > 0 else -1
 
-            if diff != 0:
-                keys = list(pts_per_seg.keys())
-
-                for i in range(abs(diff)):
-                    pts_per_seg[keys[i % len(keys)]] += 1 if diff > 0 else -1
-
-            time_points: list[float] = []
-            for seg, (start, end) in day_segments.items():
-                count = pts_per_seg[seg]
-
-                if count > 0:
-                    np_array = uniform(start, end, count)
-                    float_values = [float(x) for x in np_array]
-                    segment_times = sorted(float_values)
-                    time_points.extend(segment_times)
-
-            return array(sorted(time_points), dtype=float64)
-
-        else:
-            raise ValueError(f"Unknown interval type: {self.interval_type}")
-
-    def generate_temperatures(
-        self, hours: NDArray[float64]
-    ) -> NDArray[float64]:
-        """Generate temperature values for given hours"""
-        scale_factor = 24 / self.period_hours
-
-        temps = self.base_temp + self.amplitude * sin(
-            (hours * scale_factor - 6) * pi / 12
+        return array(
+            sorted(
+                [
+                    float(x)
+                    for seg, (start, end) in day_segs.items()
+                    if pts_per_seg[seg] > 0
+                    for x in sorted(uniform(start, end, pts_per_seg[seg]))
+                ]
+            ),
+            dtype=float64,
         )
 
-        noise = normal(0, self.noise_std, hours.size)
-        temps += noise
+    return array([], dtype=float64)
 
-        return temps
 
-    def generate_and_save(self) -> DataFrame:
-        """Generate data and save to CSV file"""
-        hours = self.generate_time_points()
-        temps = self.generate_temperatures(hours)
+def generate_temperatures(
+    hours: NDArray[float64],
+    base_temp: float = 18,
+    amplitude: float = 7,
+    period_hours: float = 24,
+    noise_std: float = 1.2,
+) -> NDArray[float64]:
+    """Generate temperature values for given hours"""
+    temps = base_temp + amplitude * sin(
+        (hours * (24 / period_hours) - 6) * pi / 12
+    )
 
-        # Create DataFrame and save to CSV
-        data = DataFrame({"Time (hours)": hours, "Temperature (°C)": temps})
+    noise = normal(0, noise_std, hours.size)
+    temps += noise
 
-        data.to_csv(self.output_file, index=False)
+    return temps
 
-        print(
-            f"CSV file '{self.output_file}' created with {len(hours)} "
-            f"temperature data points across {self.period_hours} hours"
-        )
 
-        return data
+def generate_and_save(
+    period_hours: float = 24,
+    num_points: int = 25,
+    interval_type: str = "regular",
+    base_temp: float = 18,
+    amplitude: float = 7,
+    noise_std: float = 1.2,
+    random_seed: Optional[int] = None,
+    output_file: str = "data_points.csv",
+) -> DataFrame:
+    """Generate data and save to CSV file"""
+    if random_seed is not None:
+        seed(random_seed)
+
+    hours = generate_time_points(period_hours, num_points, interval_type)
+    temps = generate_temperatures(
+        hours, base_temp, amplitude, period_hours, noise_std
+    )
+    data = DataFrame({"Time (hours)": hours, "Temperature (°C)": temps})
+    data.to_csv(output_file, index=False)
+
+    print(
+        f"CSV file '{output_file}' created with {len(hours)} "
+        f"temperature data points across {period_hours} hours"
+    )
+
+    return data
 
 
 def generate() -> None:
@@ -192,7 +185,7 @@ def generate() -> None:
 
     args = parser.parse_args()
 
-    generator = TemperatureDataGenerator(
+    generate_and_save(
         period_hours=args.period,
         num_points=args.points,
         interval_type=args.intervals,
@@ -202,8 +195,6 @@ def generate() -> None:
         random_seed=args.seed,
         output_file=args.output,
     )
-
-    generator.generate_and_save()
 
 
 if __name__ == "__main__":
