@@ -58,26 +58,29 @@ def _compute_pts_per_seg(
 
 
 def _weighted_pts(period_hours: float, num_points: int) -> NDArray[float64]:
-    day_segs = _build_day_segs(period_hours)
-
-    weights: dict[str, float] = {
-        "early_morning": 0.15,
-        "morning": 0.3,
-        "afternoon": 0.3,
-        "night": 0.25,
-    }
-
-    pts_per_seg = _compute_pts_per_seg(day_segs, weights, num_points)
-    pts = []
-
-    for seg, (start, end) in day_segs.items():
-        n = pts_per_seg.get(seg, 0)
-
-        if n > 0:
-            samples = sorted(uniform(start, end, n))
-            pts.extend(float(x) for x in samples)
-
-    return array(sorted(pts), dtype=float64)
+    return array(
+        sorted(
+            [
+                float(x)
+                for day_segs in [_build_day_segs(period_hours)]
+                for computed in [
+                    _compute_pts_per_seg(
+                        day_segs,
+                        {
+                            "early_morning": 0.15,
+                            "morning": 0.3,
+                            "afternoon": 0.3,
+                            "night": 0.25,
+                        },
+                        num_points,
+                    )
+                ]
+                for seg, (start, end) in day_segs.items()
+                for x in sorted(uniform(start, end, computed.get(seg, 0)))
+            ]
+        ),
+        dtype=float64,
+    )
 
 
 def generate_time_points(
