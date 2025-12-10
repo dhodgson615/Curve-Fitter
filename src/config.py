@@ -1,6 +1,6 @@
 PLOT_CONFIG = {
     "plot_style": "dark_background",
-    "figsize": (10, 6),
+    "figsize": (10.0, 6.0),
     "curve_label": "Interpolated Curve",
     "curve_color": "blue",
     "curve_line_style": "-",
