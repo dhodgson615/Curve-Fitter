@@ -28,7 +28,9 @@
    pip install -r requirements.txt
    ```
 
-   **Note:** For Python 3.13+ users, ensure you have `pyparsing >= 3.2.0` to avoid deprecation warnings. The requirements.txt file specifies this version automatically.
+   **Note:** For Python 3.13+ users, ensure you have `pyparsing >= 3.2.0` to
+   avoid deprecation warnings. The requirements.txt file specifies this version
+   automatically.
 
 3. Run tests to verify installation:
    ```bash
@@ -51,8 +53,6 @@ requires only two numbers per axis to define its position, is computed in
 linear time, behaves predictably, is perfectly smooth, and is infinitely
 differentiable.
 
-
-
 ## Why Bother with Half-sine Interpolation?
 
 Half-sine curves are uniquely well-suited for smooth interpolation because they
@@ -73,8 +73,6 @@ Also, tweaking one point only affects the two neighboring segments. That makes
 this method especially appealing for real-time applications and interactive
 editors where responsiveness matters.
 
-
-
 ## The Math, Step by Step
 
 1. Given two points $P_1 = (x_1\,y_1)$ and $P_2 = (x_2\,y_2)$ with $x_2 > x_1$,
@@ -83,7 +81,7 @@ editors where responsiveness matters.
 
 2. A shifted sine can do that:
 
-   $f(x) = A \sin\bigl(\omega(x - \phi)\bigr) + C.$
+   $f(x) = A \ \sin\bigl(\omega(x - \phi)\bigr) + C.$
 
 3. Exactly half a period must fit between the x-coordinates, so
 
@@ -108,8 +106,10 @@ editors where responsiveness matters.
 
    The half-sine segment finally reads
 
-   $f(x) = \frac{y_2 - y_1}{2} \ \sin\ \Bigl(\pi\,\frac{x - x_2 - n} {x_2 -
-   x_1}\Bigr) + \frac{y_1 + y_2}{2},$
+   $f(x) = \dfrac{y_2 - y_1}{2}\ \sin\ \Bigl(\pi\ \dfrac{x - x_2 - n}{x_2 -
+           x_1}\Bigr) + \dfrac{y_1 + y_2}{2}
+         = \dfrac{(y_2 - y_1)\ \sin\ \Bigl(\pi\ \dfrac{x - x_2 - n}{x_2 -
+           x_1}\Bigr) + y_1 + y_2}{2}$
 
    with $n$ picked so that
 
@@ -122,8 +122,6 @@ editors where responsiveness matters.
    but in the code you’ll see Newton–Raphson used instead. I predict that
    iterative form is more flexible once you start experimenting with
    non-standard easing profiles or if you need extreme precision.
-
-
 
 ## Extending the Idea
 
@@ -144,3 +142,4 @@ iteratively find the points that minimize the error values.
 
 And you’re not limited to 2D. By feeding each point’s interpolation into
 multiple coordinate axes, you can smoothly bend paths through 3D space as well.
+
