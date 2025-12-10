@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from math import cos, pi, sin
 from os.path import abspath, dirname, join
 from re import findall
 from sys import path
@@ -9,8 +10,6 @@ from matplotlib.figure import Figure
 from matplotlib.pyplot import (figure, grid, legend, plot, scatter, show,
                                title, xlabel, ylabel)
 from matplotlib.pyplot.style import use
-from numpy import array, asarray, cos, float64, linspace, pi, sin
-from numpy.typing import NDArray
 from pandas import read_csv
 
 # Add the project root to Python path when running directly
@@ -19,7 +18,7 @@ if __name__ == "__main__":
     path.insert(0, abspath(join(dirname(__file__), "..")))
 
 try:
-    from src import config as config_module
+    from src.config import INTERPOLATION_CONFIG, PLOT_CONFIG
 
 except ImportError:
     from config import INTERPOLATION_CONFIG, PLOT_CONFIG
@@ -31,19 +30,11 @@ def parse_coords(s: str) -> list[tuple[float, float]]:
     return [(float(x), float(y)) for x, y in findall(COORD_REGEX, s)]
 
 
-def f(
-    x: NDArray[float64], x1: float, x2: float, y1: float, y2: float, n: float
-) -> NDArray[float64]:
-    """Calculate interpolation values using sine function with
-    adjustment n
-    """
-    x_array = array([x], dtype=float64) if isinstance(x, float) else x
-
-    result = (
-        y1 + y2 + (y2 - y1) * sin(pi * (x_array - x2 - n) / (x2 - x1))
-    ) / 2
-
-    return asarray(result, dtype=float64)
+def f(x: float, x1: float, x2: float, y1: float, y2: float, n: float) -> float:
+    """Calculate interpolation value at x using sine function with adjustment n"""
+    dx = x2 - x1
+    val = (y1 + y2 + (y2 - y1) * sin(pi * (x - x2 - n) / dx)) / 2
+    return float(val)
 
 
 def adjust_n(
@@ -51,66 +42,49 @@ def adjust_n(
     x2: float,
     y1: float,
     y2: float,
-    iters: Optional[int] = None,
-    tol: Optional[float] = None,
+    iterations: int = int(INTERPOLATION_CONFIG["newton_raphson_iterations"]),
+    tolerance: float = float(INTERPOLATION_CONFIG["newton_raphson_tolerance"]),
 ) -> float:
     """Find adjustment value n using Newton-Raphson method"""
     assert x2 != x1, "Newton–Raphson derivative hit 0"
-
-    iterations: int = (
-        iters
-        if iters is not None
-        else int(INTERPOLATION_CONFIG["newton_raphson_iterations"])
-    )
-
-    tolerance: float = (
-        tol
-        if tol is not None
-        else float(INTERPOLATION_CONFIG["newton_raphson_tolerance"])
-    )
-
     n = 0.0
+    dx = x2 - x1
+    a = (y2 - y1) / 2
 
     for _ in range(iterations):
-        a, dx, t = (y2 - y1) / 2, x2 - x1, pi * n / (x2 - x1)
-        fn, fp = a * sin(t) + (y1 + y2) / 2 - y1, a * cos(t) * pi / dx
+        t = pi * n / dx
+        fn = a * sin(t) + (y1 + y2) / 2 - y1
+        fp = a * cos(t) * pi / dx
 
         if abs(fn) < tolerance:
             break
 
-        if fp == 0:
-            raise ValueError("Newton–Raphson derivative hit 0")
-
+        assert fp != 0, "Newton–Raphson derivative hit 0"
         n -= fn / fp
 
-    return n
+    return float(n)
 
 
 def interpolate(
-    pts: list[tuple[float, float]], pts_per_seg: Optional[int] = None
-) -> tuple[NDArray[float64], NDArray[float64]]:
-    """Interpolate a smooth curve through the given points"""
-    pts_per_seg: int = (
-        pts_per_seg
-        if pts_per_seg is not None
-        else int(INTERPOLATION_CONFIG["points_per_segment"])
+    pts: list[tuple[float, float]],
+    pts_per_seg: int = int(INTERPOLATION_CONFIG["points_per_segment"]),
+) -> tuple[list[float], list[float]]:
+    """Interpolate a smooth curve through the given points."""
+    return (
+        [
+            (x1 + (x2 - x1) / pts_per_seg * j)
+            for (x1, y1), (x2, y2) in list(zip(sorted(pts), sorted(pts)[1:]))
+            for j in range(pts_per_seg)
+        ]
+        + [float(pts[-1][0])],
+        [
+            f((x1 + (x2 - x1) / pts_per_seg * j), x1, x2, y1, y2, n)
+            for (x1, y1), (x2, y2) in list(zip(sorted(pts), sorted(pts)[1:]))
+            for n in [adjust_n(x1, x2, y1, y2)]
+            for j in range(pts_per_seg)
+        ]
+        + [float(pts[-1][1])],
     )
-
-    pts = sorted(pts)
-    xs_out: list[float] = []
-    ys_out: list[float] = []
-
-    for i in range(len(pts) - 1):
-        x1, y1 = pts[i]
-        x2, y2 = pts[i + 1]
-        seg_x = linspace(x1, x2, pts_per_seg, endpoint=False, dtype=float64)
-        seg_y = f(seg_x, x1, x2, y1, y2, adjust_n(x1, x2, y1, y2))
-        xs_out.extend(seg_x)
-        ys_out.extend(seg_y)
-
-    xs_out.append(pts[-1][0])
-    ys_out.append(pts[-1][1])
-    return array(xs_out, dtype=float64), array(ys_out, dtype=float64)
 
 
 def load_points_from_csv(
@@ -120,8 +94,14 @@ def load_points_from_csv(
 ) -> tuple[list[tuple[float, float]], str, str]:
     """Load points from a CSV file"""
     df = read_csv(filename)
-    x_col, y_col = x_col or df.columns[0], y_col or df.columns[1]
-    return list(zip(df[x_col], df[y_col])), x_col, y_col
+    x_col = x_col or df.columns[0]
+    y_col = y_col or df.columns[1]
+
+    points: list[tuple[float, float]] = [
+        (float(x), float(y)) for x, y in zip(df[x_col], df[y_col])
+    ]
+
+    return points, x_col, y_col
 
 
 def graph(
