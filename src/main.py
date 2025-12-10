@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 from os.path import abspath, dirname, join
 from re import findall
 from sys import path
-from typing import Any, Optional, Union, cast
+from typing import Any, Optional
 
 from matplotlib.figure import Figure
 from matplotlib.pyplot import (figure, grid, legend, plot, scatter, show,
@@ -30,20 +32,15 @@ def parse_coords(s: str) -> list[tuple[float, float]]:
 
 
 def f(
-    x: Union[float, NDArray[float64]],
-    x1: float,
-    x2: float,
-    y1: float,
-    y2: float,
-    n: float,
+    x: NDArray[float64], x1: float, x2: float, y1: float, y2: float, n: float
 ) -> NDArray[float64]:
     """Calculate interpolation values using sine function with
     adjustment n
     """
     x_array = array([x], dtype=float64) if isinstance(x, float) else x
 
-    result = (y2 - y1) / 2 * sin(pi * (x_array - x2 - n) / (x2 - x1)) + (
-        y1 + y2
+    result = (
+        y1 + y2 + (y2 - y1) * sin(pi * (x_array - x2 - n) / (x2 - x1))
     ) / 2
 
     return asarray(result, dtype=float64)
@@ -140,7 +137,7 @@ def graph(
     pts = parse_coords(input(cfg["input_prompt"])) if pts is None else pts
     x, y = interpolate(pts)
     use(str(cfg["plot_style"]))
-    fig = figure(figsize=cast(tuple[float, float], cfg["figsize"]))
+    fig = figure(figsize=cfg["figsize"])
 
     plot(
         x,
@@ -163,16 +160,16 @@ def graph(
         alpha=float(cfg["alpha"]),
     )
 
-    title(str(cfg["graph_title"]))
+    title(cfg["graph_title"])
 
     if cfg["x_label"]:
-        xlabel(str(cfg["x_label"]))
+        xlabel(cfg["x_label"])
 
     if cfg["y_label"]:
-        ylabel(str(cfg["y_label"]))
+        ylabel(cfg["y_label"])
 
     legend()
-    grid(bool(cfg["show_grid"]))
+    grid(cfg["show_grid"])
 
     if cfg["show_plot"]:
         show()
