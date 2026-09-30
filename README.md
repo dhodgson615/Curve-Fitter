@@ -48,7 +48,7 @@ Connecting scattered points smoothly is a common problem that arises in various
 applications, such as easing animations, shaping audio envelopes, planning a
 robot arm’s trajectory, or simply rendering a visually appealing curve in a
 plotting app. The half-period sine wave emerges as a versatile building block
-for this task. It never goes outside of the range between two adjacent points,
+for this task. It never goes outside the range between two adjacent points,
 requires only two numbers per axis to define its position, is computed in linear
 time, behaves predictably, is perfectly smooth, and is infinitely
 differentiable.
