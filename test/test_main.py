@@ -6,7 +6,7 @@ from unittest import mock
 import matplotlib
 import numpy
 from pandas import DataFrame
-import pytest
+from pytest import fixture, raises
 import matplotlib.pyplot
 
 import src.main
@@ -15,7 +15,7 @@ matplotlib.use("Agg")  # Set matplotlib to use non-interactive backend
 
 
 class TestMainFunctions:
-    @pytest.fixture
+    @fixture
     def sample_points(self) -> list[tuple[float, float]]:
         return [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
 
@@ -108,7 +108,7 @@ class TestMainFunctions:
         x1, x2 = (0, 0)  # Should cause division by zero in derivative
         y1, y2 = 0, 10
 
-        with pytest.raises(
+        with raises(
             ValueError, match="Newton–Raphson derivative hit zero"
         ):
             src.main.adjust_n(x1, x2, y1, y2)
