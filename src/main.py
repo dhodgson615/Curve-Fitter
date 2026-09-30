@@ -46,9 +46,9 @@ DEFAULT_NEWTON_TOLERANCE: float = float(
 
 def parse_coords(coordinate_string: str) -> list[Point]:
     """Convert text like "(1, 2), (3, 4)" into [(1.0, 2.0), (3.0, 4.0)]."""
-    matches: list[Any] = findall(
+    matches: list[tuple[str, str]] = findall(
         COORDINATE_REGEX, coordinate_string
-    )  # TODO: narrow `Any` typing
+    )
 
     return [(float(x), float(y)) for x, y in matches]
 
