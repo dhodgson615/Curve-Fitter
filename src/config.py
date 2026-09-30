@@ -25,7 +25,9 @@ INTERPOLATION_CONFIG: dict[str, Any] = {
 }
 
 # Defaults used for every plot.
-PLOT_CONFIG: dict[str, Any] = {
+PLOT_CONFIG: dict[
+    str, Union[str, tuple[float, float], float, bool, int, None]
+] = {
     "plot_style": "dark_background",  # any matplotlib style name
     "figsize": (10.0, 6.0),  # (width, height) in inches
     "alpha": 1.0,  # opacity of curve and points: 0 = invisible, 1 = solid
