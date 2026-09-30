@@ -14,7 +14,7 @@ CSV_FILE = str(PROJECT_ROOT / "data" / "data_points.csv")
 SAMPLE_POINTS = [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
 
 # Interpolation settings
-INTERPOLATION_CONFIG: dict[str, Any] = {
+INTERPOLATION_CONFIG: dict[str, Union[int, float]] = {
     # How many x-values to compute between each pair of neighboring points.
     # Higher = smoother curve, but slower.
     "points_per_segment": 250,
