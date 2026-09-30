@@ -182,8 +182,12 @@ def graph(
         points = parse_coords(input(settings["input_prompt"]))
 
     curve_points = interpolate(points)
-    curve_x, curve_y = zip(*curve_points)
-    point_xs, point_ys = zip(*points)
+
+    curve_x = [point[0] for point in curve_points]
+    curve_y = [point[1] for point in curve_points]
+
+    point_xs = [point[0] for point in points]
+    point_ys = [point[1] for point in points]
 
     plt.style.use(str(settings["plot_style"]))
     fig, ax = plt.subplots(figsize=settings["figsize"])
