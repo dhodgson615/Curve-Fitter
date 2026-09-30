@@ -102,7 +102,7 @@ editors where responsiveness matters.
 
    $A = \frac{y_2 - y_1}{2}, \qquad C = \frac{y_1 + y_2}{2}.$
 
-8. **Collect the pieces**
+6. **Collect the pieces**
 
    The half-sine segment finally reads
 
