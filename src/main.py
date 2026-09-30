@@ -88,11 +88,7 @@ def find_phase_shift(
     Newton-Raphson does this by repeatedly nudging `n` by
     `error / slope` until the error is smaller than `tolerance`.
     """
-    if x1 == x2:
-        raise ValueError(
-            "Newton–Raphson derivative hit zero: x1 and x2 must be different"
-        )
-
+    assert x1 != x2, "x1 and x2 must be different"
     width: float = x2 - x1
     amplitude: float = (y2 - y1) / 2
     n: float = 0.0  # starting guess
@@ -105,9 +101,7 @@ def find_phase_shift(
         if abs(error) < tolerance:
             break
 
-        if slope == 0:
-            raise ValueError("Newton–Raphson derivative hit zero")
-
+        assert slope != 0, "derivative hit zero in Newton-Raphson"
         n -= error / slope
 
     return float(n)
