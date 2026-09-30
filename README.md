@@ -141,4 +141,3 @@ iteratively find the points that minimize the error values.
 
 And you’re not limited to 2D. By feeding each point’s interpolation into
 multiple coordinate axes, you can smoothly bend paths through 3D space as well.
-
