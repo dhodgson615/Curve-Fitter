@@ -92,7 +92,7 @@ editors where responsiveness matters.
    $+\frac{\pi}{2}$. Translating this into a phase offset introduces a single
    unknown $n$.
 
-7. **Solve for amplitude and shift**
+5. **Solve for amplitude and shift**
 
    Plugging $x_1$ and $x_2$ into $f$ gives two linear equations:
 
