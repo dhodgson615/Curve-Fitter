@@ -87,7 +87,7 @@ editors where responsiveness matters.
 
    $\omega = \dfrac{\pi}{x_2 - x_1}.$
 
-6. The derivative $f'(x) = A\omega\cos(\ldots)$ vanishes when the cosine is
+4. The derivative $f'(x) = A\omega\cos(\ldots)$ vanishes when the cosine is
    $\pm 1$. That means the sine must start at $-\frac{\pi}{2}$ and end at
    $+\frac{\pi}{2}$. Translating this into a phase offset introduces a single
    unknown $n$.
