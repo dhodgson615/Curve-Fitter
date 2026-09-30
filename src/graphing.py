@@ -4,7 +4,8 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
 from src.config import PLOT_CONFIG
-from src.main import Point, interpolate
+from src.main import interpolate
+from src.types import Point
 from src.utils import parse_coords
 
 

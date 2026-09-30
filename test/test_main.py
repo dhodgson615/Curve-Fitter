@@ -9,8 +9,10 @@ from numpy import isclose
 from pandas import DataFrame
 from pytest import fixture, raises
 
-from src.main import (COORDINATE_REGEX, adjust_n, f, graph, interpolate,
-                      load_points_from_csv, parse_coords)
+from src.graphing import graph
+from src.main import (COORDINATE_REGEX, adjust_n, f, interpolate,
+                      load_points_from_csv)
+from src.utils import parse_coords
 
 use("Agg")  # Set matplotlib to use non-interactive backend
 
