@@ -4,7 +4,7 @@ from tempfile import NamedTemporaryFile
 from unittest import mock
 
 import matplotlib
-import numpy as np
+import numpy
 import pandas as pd
 import pytest
 import matplotlib.pyplot
@@ -52,37 +52,37 @@ class TestMainFunctions:
         n = src.main.adjust_n(x1, x2, y1, y2)
 
         # Test that the function returns y1 at x1
-        assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
+        assert numpy.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
 
         # Test that the function returns y2 at x2
-        assert np.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
+        assert numpy.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 2: Without adjustment (n=0), midpoint should return y1
         mid_x = (x1 + x2) / 2
-        assert np.isclose(src.main.f(mid_x, x1, x2, y1, y2, 0), y1)
+        assert numpy.isclose(src.main.f(mid_x, x1, x2, y1, y2, 0), y1)
 
         # Test case 3: Negative values
         x1, x2 = -3, -1
         y1, y2 = -5, -2
         n = src.main.adjust_n(x1, x2, y1, y2)
 
-        assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
-        assert np.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
+        assert numpy.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
+        assert numpy.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 4: Mixed positive and negative values
         x1, x2 = -5, 5
         y1, y2 = -10, 10
         n = src.main.adjust_n(x1, x2, y1, y2)
 
-        assert np.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
-        assert np.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
+        assert numpy.isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
+        assert numpy.isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 5: When y1=y2, function should produce a flat line
         x1, x2 = 0, 10
         y1, y2 = 5, 5
 
-        assert np.isclose(src.main.f(3, x1, x2, y1, y2, 0), 5)
-        assert np.isclose(src.main.f(7, x1, x2, y1, y2, 0), 5)
+        assert numpy.isclose(src.main.f(3, x1, x2, y1, y2, 0), 5)
+        assert numpy.isclose(src.main.f(7, x1, x2, y1, y2, 0), 5)
 
     def test_newton_raphson(self) -> None:
         # Test Newton-Raphson solver for simple cases
@@ -93,7 +93,7 @@ class TestMainFunctions:
         n = src.main.adjust_n(x1, x2, y1, y2)
         result = src.main.f(x1, x1, x2, y1, y2, n)
 
-        assert np.isclose(result, y1)
+        assert numpy.isclose(result, y1)
 
         # Test with different values
         x1, x2 = 1, 3
@@ -101,7 +101,7 @@ class TestMainFunctions:
         n = src.main.adjust_n(x1, x2, y1, y2)
         result = src.main.f(x1, x1, x2, y1, y2, n)
 
-        assert np.isclose(result, y1)
+        assert numpy.isclose(result, y1)
 
     def test_newton_raphson_zero_derivative(self) -> None:
         # Test when derivative hits zero
@@ -130,10 +130,10 @@ class TestMainFunctions:
         # Check that the interpolated points include original points
         x_original, y_original = zip(*sample_points)
 
-        assert np.isclose(x_interp[0], x_original[0])
-        assert np.isclose(y_interp[0], y_original[0])
-        assert np.isclose(x_interp[-1], x_original[-1])
-        assert np.isclose(y_interp[-1], y_original[-1])
+        assert numpy.isclose(x_interp[0], x_original[0])
+        assert numpy.isclose(y_interp[0], y_original[0])
+        assert numpy.isclose(x_interp[-1], x_original[-1])
+        assert numpy.isclose(y_interp[-1], y_original[-1])
 
     def test_load_points_from_csv(self) -> None:
         # Create a test CSV file
