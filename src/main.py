@@ -15,7 +15,6 @@ Run it from the project root (the folder that contains `src/`):
 """
 
 from math import cos, pi, sin
-from re import findall
 from typing import Any, Optional, TypeAlias, Union
 
 import matplotlib.pyplot as plt
@@ -23,6 +22,7 @@ from matplotlib.figure import Figure
 from pandas import DataFrame, read_csv
 
 from config import INTERPOLATION_CONFIG, PLOT_CONFIG
+from utils import parse_coords
 
 # A point is an (x, y) pair.
 Point: TypeAlias = tuple[float, float]
@@ -42,15 +42,6 @@ DEFAULT_NEWTON_ITERATIONS: int = int(
 DEFAULT_NEWTON_TOLERANCE: float = float(
     INTERPOLATION_CONFIG["newton_raphson_tolerance"]
 )
-
-
-def parse_coords(coordinate_string: str) -> list[Point]:
-    """Convert text like "(1, 2), (3, 4)" into [(1.0, 2.0), (3.0, 4.0)]."""
-    matches: list[tuple[str, str]] = findall(
-        COORDINATE_REGEX, coordinate_string
-    )
-
-    return [(float(x), float(y)) for x, y in matches]
 
 
 def half_sine(
@@ -192,8 +183,8 @@ def graph(
 
     curve_points: list[Point] = interpolate(points)
 
-    curve_x: list[float] = [point[0] for point in curve_points]
-    curve_y: list[float] = [point[1] for point in curve_points]
+    curve_xs: list[float] = [point[0] for point in curve_points]
+    curve_ys: list[float] = [point[1] for point in curve_points]
 
     point_xs: list[float] = [point[0] for point in points]
     point_ys: list[float] = [point[1] for point in points]
@@ -202,8 +193,8 @@ def graph(
     figure, axes = plt.subplots(figsize=settings["figsize"])
 
     axes.plot(
-        curve_x,
-        curve_y,
+        curve_xs,
+        curve_ys,
         label=str(settings["curve_label"]),
         color=str(settings["curve_color"]),
         linestyle=str(settings["curve_line_style"]),
