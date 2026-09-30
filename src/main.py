@@ -70,28 +70,37 @@ def adjust_n(
 
 def interpolate(
     points: list[tuple[float, float]],
-    points_per_segment: int = int(INTERPOLATION_CONFIG["points_per_segment"]),
-) -> tuple[list[float], list[float]]:
-    """Interpolate a smooth curve through the given points."""
-    return (
-        [
-            (x1 + (x2 - x1) / points_per_segment * j)
-            for (x1, y1), (x2, y2) in list(
-                zip(sorted(points), sorted(points)[1:])
-            )
-            for j in range(points_per_segment)
-        ]
-        + [float(points[-1][0])],
-        [
-            f((x1 + (x2 - x1) / points_per_segment * j), x1, x2, y1, y2, n)
-            for (x1, y1), (x2, y2) in list(
-                zip(sorted(points), sorted(points)[1:])
-            )
-            for n in [adjust_n(x1, x2, y1, y2)]
-            for j in range(points_per_segment)
-        ]
-        + [float(points[-1][1])],
-    )
+    points_per_segment: int = DEFAULT_POINTS_PER_SEGMENT,
+) -> tuple[
+    list[float], list[float]
+]:  # TODO: change this so that it returns a list[Point] instead of two lists
+    """Compute a smooth curve through `points`.
+
+    Returns two lists, `(x_values, y_values)`, ready to hand to a plotting
+    function. Points are sorted by x first, so the input order doesn't matter.
+    Each pair of neighboring points contributes `points_per_segment` samples,
+    plus one final sample for the last point.
+    """
+    sorted_points: list[Point] = sorted(points)
+    x_values: list[float] = []
+    y_values: list[float] = []
+
+    for (x1, y1), (x2, y2) in zip(sorted_points, sorted_points[1:]):
+        n: float = find_phase_shift(x1, x2, y1, y2)  # once per segment
+        step: float = (x2 - x1) / points_per_segment
+
+        for j in range(points_per_segment):
+            x = x1 + step * j
+            x_values.append(x)
+            y_values.append(half_sine(x, x1, x2, y1, y2, n))
+
+    # The loop above stops just short of each segment's right end, so close the
+    # curve off with the very last point.
+    last_x, last_y = sorted_points[-1]
+    x_values.append(float(last_x))
+    y_values.append(float(last_y))
+
+    return x_values, y_values
 
 
 def load_points_from_csv(
