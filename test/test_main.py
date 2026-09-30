@@ -5,7 +5,7 @@ from unittest import mock
 
 import matplotlib
 import numpy
-import pandas as pd
+from pandas import DataFrame
 import pytest
 import matplotlib.pyplot
 
@@ -137,7 +137,7 @@ class TestMainFunctions:
 
     def test_load_points_from_csv(self) -> None:
         # Create a test CSV file
-        data = pd.DataFrame({"x": [0, 1, 2, 3, 4], "y": [5, 4, 3, 2, 1]})
+        data = DataFrame({"x": [0, 1, 2, 3, 4], "y": [5, 4, 3, 2, 1]})
 
         with NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
             try:
