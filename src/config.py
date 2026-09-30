@@ -7,7 +7,7 @@ from src.main import Point
 
 # The folder that contains `src/` and `data/`. Found relative to this file so
 # paths work no matter which directory you run Python from.
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent
 
 # Where `data/data_gen.py` writes its CSV of generated data.
 CSV_FILE: str = str(PROJECT_ROOT / "data" / "data_points.csv")
