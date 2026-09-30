@@ -90,7 +90,12 @@ def gen_t_pts(
     period_hrs: float = 24,
     n_pts: int = 25,
     dist: str = "regular",  # 'regular', 'random', 'weighted'
-) -> NDArray[float64]:
+) -> Union[
+    ndarray[tuple[Any, ...], dtype[float64]],
+    ndarray[
+        tuple[Any, ...], dtype[generic[Any]]
+    ],  # TODO: narrow type and replace `Any`
+]:
     """Generate time points based on specified interval type (drop-in replacement)."""
     assert dist in (
         "regular",
