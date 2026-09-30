@@ -108,9 +108,7 @@ class TestMainFunctions:
         x1, x2 = (0, 0)  # Should cause division by zero in derivative
         y1, y2 = 0, 10
 
-        with raises(
-            ValueError, match="Newton–Raphson derivative hit zero"
-        ):
+        with raises(ValueError, match="Newton–Raphson derivative hit zero"):
             src.main.adjust_n(x1, x2, y1, y2)
 
     def test_interpolate(
