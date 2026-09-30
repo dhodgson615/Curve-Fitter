@@ -1,4 +1,18 @@
-from __future__ import annotations
+"""Half-sine interpolation: graph a smooth curve through a list of points.
+
+Between each pair of neighboring points we draw half of a sine wave, shaped so
+that the curve leaves and arrives flat (zero slope) and passes exactly through
+both points. Chain those segments together and you get one smooth curve.
+
+The README walks through the math. The variable names used here match it:
+    (x1, y1) and (x2, y2)  the two points a segment connects
+    n                      a sideways shift that lines the wave up with them
+
+Run it from the project root (the folder that contains `src/`):
+
+    python3 src/main.py
+
+"""
 
 from math import cos, pi, sin
 from os.path import abspath, dirname, join
