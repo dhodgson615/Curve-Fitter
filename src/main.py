@@ -15,69 +15,100 @@ Run it from the project root (the folder that contains `src/`):
 """
 
 from math import cos, pi, sin
-from os.path import abspath, dirname, join
 from re import findall
-from sys import path
 from typing import Any, Optional
 
+import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
-from matplotlib.pyplot import (figure, grid, legend, plot, scatter, show,
-                               title, xlabel, ylabel)
-from matplotlib.pyplot.style import use
-from pandas import read_csv
+from pandas import DataFrame, read_csv
 
-# Add the project root to Python path when running directly
-# TODO: Remove this hack
-if __name__ == "__main__":
-    path.insert(0, abspath(join(dirname(__file__), "..")))
+from config import INTERPOLATION_CONFIG, PLOT_CONFIG
 
-try:
-    from src.config import INTERPOLATION_CONFIG, PLOT_CONFIG
+# A point is an (x, y) pair.
+Point: type[tuple[float, float]] = tuple[float, float]
 
-except ImportError:
-    from config import INTERPOLATION_CONFIG, PLOT_CONFIG
+# Matches "(x, y)" pairs in text like "(1, 2), (3.5, -4)" and captures x and y.
+COORDINATE_REGEX: str = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
 
-COORDINATE_REGEX = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
+# Defaults pulled from config.py so they can be changed in one place.
+DEFAULT_POINTS_PER_SEGMENT: int = int(
+    INTERPOLATION_CONFIG["points_per_segment"]
+)
 
+DEFAULT_NEWTON_ITERATIONS: int = int(
+    INTERPOLATION_CONFIG["newton_raphson_iterations"]
+)
 
-def parse_coords(coordinate_string: str) -> list[tuple[float, float]]:
-    return [
-        (float(x), float(y))
-        for x, y in findall(COORDINATE_REGEX, coordinate_string)
-    ]
+DEFAULT_NEWTON_TOLERANCE: float = float(
+    INTERPOLATION_CONFIG["newton_raphson_tolerance"]
+)
 
 
-def f(x: float, x1: float, x2: float, y1: float, y2: float, n: float) -> float:
-    """Calculate interpolation value at x using sine function with adjustment n"""
-    dx = x2 - x1
-    val = (y1 + y2 + (y2 - y1) * sin(pi * (x - x2 - n) / dx)) / 2
-    return float(val)
+def parse_coords(coordinate_string: str) -> list[Point]:
+    """Convert text like "(1, 2), (3, 4)" into [(1.0, 2.0), (3.0, 4.0)]."""
+    matches: list[Any] = findall(
+        COORDINATE_REGEX, coordinate_string
+    )  # TODO: narrow `Any` typing
+
+    return [(float(x), float(y)) for x, y in matches]
 
 
-def adjust_n(
+def half_sine(
+    x: float, x1: float, x2: float, y1: float, y2: float, n: float
+) -> float:
+    """Height of the half-sine segment from (x1, y1) to (x2, y2) at `x`.
+
+    This is the formula from the README:
+
+        f(x) = ((y2 - y1) * sin(pi * (x - x2 - n) / (x2 - x1)) + y1 + y2) / 2
+
+    `n` slides the wave sideways. Use `find_phase_shift` to get the `n`
+    that makes the curve pass through both end points.
+    """
+    width: float = x2 - x1
+    phase: float = pi * (x - x2 - n) / width
+    return (y1 + y2 + (y2 - y1) * sin(phase)) / 2
+
+
+def find_phase_shift(
     x1: float,
     x2: float,
     y1: float,
     y2: float,
-    iterations: int = int(INTERPOLATION_CONFIG["newton_raphson_iterations"]),
-    tolerance: float = float(INTERPOLATION_CONFIG["newton_raphson_tolerance"]),
+    iterations: int = DEFAULT_NEWTON_ITERATIONS,
+    tolerance: float = DEFAULT_NEWTON_TOLERANCE,
 ) -> float:
-    """Find adjustment value n using Newton-Raphson method"""
-    assert x2 != x1, "Newton–Raphson derivative hit 0"
-    n = 0.0
-    dx = x2 - x1
-    a = (y2 - y1) / 2
+    """Find the shift `n` that makes the segment start exactly at (x1, y1).
+
+    We need half_sine(x1) == y1. With a = (y2 - y1) / 2, that works out to
+    solving
+
+        error(n) = a * (sin(pi * n / width) + 1) = 0
+
+    Newton-Raphson does this by repeatedly nudging `n` by
+    `error / slope` until the error is smaller than `tolerance`.
+    """
+    if x1 == x2:
+        raise ValueError(
+            "Newton–Raphson derivative hit zero: x1 and x2 must be different"
+        )
+
+    width: float = x2 - x1
+    amplitude: float = (y2 - y1) / 2
+    n: float = 0.0  # starting guess
 
     for _ in range(iterations):
-        t = pi * n / dx
-        fn = a * sin(t) + (y1 + y2) / 2 - y1
-        fp = a * cos(t) * pi / dx
+        angle: float = pi * n / width
+        error: float = amplitude * sin(angle) + (y1 + y2) / 2 - y1
+        slope: float = amplitude * cos(angle) * pi / width
 
-        if abs(fn) < tolerance:
+        if abs(error) < tolerance:
             break
 
-        assert fp != 0, "Newton–Raphson derivative hit 0"
-        n -= fn / fp
+        if slope == 0:
+            raise ValueError("Newton–Raphson derivative hit zero")
+
+        n -= error / slope
 
     return float(n)
 
@@ -121,13 +152,17 @@ def load_points_from_csv(
     filename: str,
     x_column: Optional[str] = None,
     y_column: Optional[str] = None,
-) -> tuple[list[tuple[float, float]], str, str]:
-    """Load points from a CSV file"""
-    df = read_csv(filename)
-    x_column = x_column or df.columns[0]
-    y_column = y_column or df.columns[1]
+) -> tuple[list[Point], str, str]:
+    """Read (x, y) points from a CSV file.
 
-    points: list[tuple[float, float]] = [
+    By default, the first column is x and the second is y. Returns the points
+    along with the column names used (handy for axis labels).
+    """
+    df: DataFrame = read_csv(filename)
+    x_column = x_column or str(df.columns[0])
+    y_column = y_column or str(df.columns[1])
+
+    points: list[Point] = [
         (float(x), float(y)) for x, y in zip(df[x_column], df[y_column])
     ]
 
@@ -135,56 +170,72 @@ def load_points_from_csv(
 
 
 def graph(
-    points: Optional[list[tuple[float, float]]] = None,
+    points: Optional[list[Point]] = None,
     config: Optional[dict[str, Any]] = None,
 ) -> Figure:
-    """Create a graph from interpolated points"""
-    cfg: dict[str, Any] = PLOT_CONFIG.copy()
+    """Plot the interpolated curve and the original points.
 
-    if config:
-        cfg.update(config)
+    `points`  the data to plot. If omitted, you're asked to type them in.
+    `config`  settings that override the defaults in ``PLOT_CONFIG`` (see
+              config.py for every option).
+    """
+    settings = {**PLOT_CONFIG, **(config or {})}
 
-    points = (
-        parse_coords(input(cfg["input_prompt"])) if points is None else points
+    if points is None:
+        points = parse_coords(input(settings["input_prompt"]))
+
+    curve_x, curve_y = interpolate(points)
+    point_xs, point_ys = zip(*points)
+
+    plt.style.use(str(settings["plot_style"]))
+    fig, ax = plt.subplots(figsize=settings["figsize"])
+
+    ax.plot(
+        curve_x,
+        curve_y,
+        label=str(settings["curve_label"]),
+        color=str(settings["curve_color"]),
+        linestyle=str(settings["curve_line_style"]),
+        linewidth=float(settings["curve_line_width"]),
+        alpha=float(settings["alpha"]),
     )
 
-    x, y = interpolate(points)
-    use(str(cfg["plot_style"]))
-    fig = figure(figsize=cfg["figsize"])
-
-    plot(
-        x,
-        y,
-        label=str(cfg["curve_label"]),
-        color=str(cfg["curve_color"]),
-        linestyle=str(cfg["curve_line_style"]),
-        linewidth=float(cfg["curve_line_width"]),
-        alpha=float(cfg["alpha"]),
+    ax.scatter(
+        point_xs,
+        point_ys,
+        label=str(settings["point_label"]),
+        color=str(settings["point_color"]),
+        marker=str(settings["point_marker"]),
+        alpha=float(settings["alpha"]),
     )
 
-    x_points, y_points = zip(*points)
+    ax.set_title(settings["graph_title"])
 
-    scatter(
-        x_points,
-        y_points,
-        color=str(cfg["point_color"]),
-        marker=str(cfg["point_marker"]),
-        label=str(cfg["point_label"]),
-        alpha=float(cfg["alpha"]),
-    )
+    if settings["x_label"]:
+        ax.set_xlabel(settings["x_label"])
 
-    title(cfg["graph_title"])
+    if settings["y_label"]:
+        ax.set_ylabel(settings["y_label"])
 
-    if cfg["x_label"]:
-        xlabel(cfg["x_label"])
+    ax.legend()
+    ax.grid(settings["show_grid"])
 
-    if cfg["y_label"]:
-        ylabel(cfg["y_label"])
-
-    legend()
-    grid(cfg["show_grid"])
-
-    if cfg["show_plot"]:
-        show()
+    if settings["show_plot"]:
+        plt.show()
 
     return fig
+
+
+def main() -> None:
+    """Ask for coordinates in the terminal, then plot the curve."""
+    graph()
+
+
+if __name__ == "__main__":
+    main()
+
+
+# Old names, kept so test/test_main.py still works. Once the tests use the
+# new names (half_sine, find_phase_shift), delete these two lines.
+f = half_sine
+adjust_n = find_phase_shift
