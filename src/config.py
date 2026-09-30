@@ -13,7 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CSV_FILE = str(PROJECT_ROOT / "data" / "data_points.csv")
 
 # A small hand-picked data set, as (x, y) pairs.
-SAMPLE_POINTS = [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
+SAMPLE_POINTS: list[Point] = [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
 
 # Interpolation settings
 INTERPOLATION_CONFIG: dict[str, Union[int, float]] = {
