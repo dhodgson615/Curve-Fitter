@@ -7,17 +7,8 @@ from sys import path
 from typing import Any, Optional
 
 from matplotlib.figure import Figure
-from matplotlib.pyplot import (
-    figure,
-    grid,
-    legend,
-    plot,
-    scatter,
-    show,
-    title,
-    xlabel,
-    ylabel,
-)
+from matplotlib.pyplot import (figure, grid, legend, plot, scatter, show,
+                               title, xlabel, ylabel)
 from matplotlib.pyplot.style import use
 from pandas import read_csv
 
