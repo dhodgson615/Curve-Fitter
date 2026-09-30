@@ -116,19 +116,16 @@ def find_phase_shift(
 def interpolate(
     points: list[tuple[float, float]],
     points_per_segment: int = DEFAULT_POINTS_PER_SEGMENT,
-) -> tuple[
-    list[float], list[float]
-]:  # TODO: change this so that it returns a list[Point] instead of two lists
+) -> list[Point]:
     """Compute a smooth curve through `points`.
 
-    Returns two lists, `(x_values, y_values)`, ready to hand to a plotting
-    function. Points are sorted by x first, so the input order doesn't matter.
-    Each pair of neighboring points contributes `points_per_segment` samples,
-    plus one final sample for the last point.
+    Returns a list of `(x, y)` points ready to hand to a plotting function or
+    processing pipeline. Points are sorted by x first, so the input order
+    doesn't matter. Each pair of neighboring points contributes
+    `points_per_segment` samples, plus one final sample for the last point.
     """
     sorted_points: list[Point] = sorted(points)
-    x_values: list[float] = []
-    y_values: list[float] = []
+    curve_points: list[Point] = []
 
     for (x1, y1), (x2, y2) in zip(sorted_points, sorted_points[1:]):
         n: float = find_phase_shift(x1, x2, y1, y2)  # once per segment
@@ -136,16 +133,15 @@ def interpolate(
 
         for j in range(points_per_segment):
             x = x1 + step * j
-            x_values.append(x)
-            y_values.append(half_sine(x, x1, x2, y1, y2, n))
+            y = half_sine(x, x1, x2, y1, y2, n)
+            curve_points.append((x, y))
 
     # The loop above stops just short of each segment's right end, so close the
     # curve off with the very last point.
     last_x, last_y = sorted_points[-1]
-    x_values.append(float(last_x))
-    y_values.append(float(last_y))
+    curve_points.append((float(last_x), float(last_y)))
 
-    return x_values, y_values
+    return curve_points
 
 
 def load_points_from_csv(
