@@ -185,7 +185,6 @@ def graph(
 
     curve_xs: list[float] = [point[0] for point in curve_points]
     curve_ys: list[float] = [point[1] for point in curve_points]
-
     point_xs: list[float] = [point[0] for point in points]
     point_ys: list[float] = [point[1] for point in points]
 
