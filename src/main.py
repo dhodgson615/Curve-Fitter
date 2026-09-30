@@ -183,8 +183,8 @@ def graph(
 
     curve_points: list[Point] = interpolate(points)
 
-    curve_x = [point[0] for point in curve_points]
-    curve_y = [point[1] for point in curve_points]
+    curve_x: list[float] = [point[0] for point in curve_points]
+    curve_y: list[float] = [point[1] for point in curve_points]
 
     point_xs = [point[0] for point in points]
     point_ys = [point[1] for point in points]
