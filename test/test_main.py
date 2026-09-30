@@ -1,5 +1,5 @@
 from os import unlink
-import re
+from re import findall
 import tempfile
 from unittest import mock
 
@@ -40,7 +40,7 @@ class TestMainFunctions:
         ]
 
         # Test regex pattern directly
-        matches = re.findall(src.main.COORDINATE_REGEX, "(1, 2), (3, 4)")
+        matches = findall(src.main.COORDINATE_REGEX, "(1, 2), (3, 4)")
 
         assert matches == [("1", "2"), ("3", "4")]
 
