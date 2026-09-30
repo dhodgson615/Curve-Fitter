@@ -3,7 +3,7 @@ from re import findall
 from tempfile import NamedTemporaryFile
 from unittest import mock
 
-import matplotlib
+from matplotlib import figure, use
 from matplotlib.pyplot import close
 from numpy import isclose
 from pandas import DataFrame
@@ -11,7 +11,7 @@ from pytest import fixture, raises
 
 import src.main
 
-matplotlib.use("Agg")  # Set matplotlib to use non-interactive backend
+use("Agg")  # Set matplotlib to use non-interactive backend
 
 
 class TestMainFunctions:
@@ -171,7 +171,7 @@ class TestMainFunctions:
         fig = src.main.graph(points=sample_points, config={"show_plot": False})
 
         # Check that a figure was created
-        assert isinstance(fig, matplotlib.figure.Figure)
+        assert isinstance(fig, figure.Figure)
 
         # Check that show was not called (we set show_plot=False)
         mock_show.assert_not_called()
