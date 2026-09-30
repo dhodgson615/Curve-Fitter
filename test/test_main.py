@@ -9,7 +9,8 @@ from numpy import isclose
 from pandas import DataFrame
 from pytest import fixture, raises
 
-import src.main
+from src.main import (COORDINATE_REGEX, adjust_n, f, graph, interpolate,
+                      load_points_from_csv, parse_coords)
 
 use("Agg")  # Set matplotlib to use non-interactive backend
 
@@ -21,26 +22,26 @@ class TestMainFunctions:
 
     def test_parse_coords(self) -> None:
         # Test basic coordinate parsing
-        assert src.main.parse_coords("(1, 2), (3, 4)") == [
+        assert parse_coords("(1, 2), (3, 4)") == [
             (1.0, 2.0),
             (3.0, 4.0),
         ]
 
         # Test with irregular spacing
-        assert src.main.parse_coords("(1,2),(3,4)") == [(1.0, 2.0), (3.0, 4.0)]
-        assert src.main.parse_coords("( 1 , 2 ), ( 3 , 4 )") == [
+        assert parse_coords("(1,2),(3,4)") == [(1.0, 2.0), (3.0, 4.0)]
+        assert parse_coords("( 1 , 2 ), ( 3 , 4 )") == [
             (1.0, 2.0),
             (3.0, 4.0),
         ]
 
         # Test with negative and decimal values
-        assert src.main.parse_coords("(-1.5, -2.3), (3.7, 4.1)") == [
+        assert parse_coords("(-1.5, -2.3), (3.7, 4.1)") == [
             (-1.5, -2.3),
             (3.7, 4.1),
         ]
 
         # Test regex pattern directly
-        matches = findall(src.main.COORDINATE_REGEX, "(1, 2), (3, 4)")
+        matches = findall(COORDINATE_REGEX, "(1, 2), (3, 4)")
 
         assert matches == [("1", "2"), ("3", "4")]
 
@@ -49,40 +50,40 @@ class TestMainFunctions:
         y1, y2 = 0, 10
 
         # Calculate the adjustment needed to make the curve pass through points
-        n = src.main.adjust_n(x1, x2, y1, y2)
+        n = adjust_n(x1, x2, y1, y2)
 
         # Test that the function returns y1 at x1
-        assert isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
+        assert isclose(f(x1, x1, x2, y1, y2, n), y1)
 
         # Test that the function returns y2 at x2
-        assert isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
+        assert isclose(f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 2: Without adjustment (n=0), midpoint should return y1
         mid_x = (x1 + x2) / 2
-        assert isclose(src.main.f(mid_x, x1, x2, y1, y2, 0), y1)
+        assert isclose(f(mid_x, x1, x2, y1, y2, 0), y1)
 
         # Test case 3: Negative values
         x1, x2 = -3, -1
         y1, y2 = -5, -2
-        n = src.main.adjust_n(x1, x2, y1, y2)
+        n = adjust_n(x1, x2, y1, y2)
 
-        assert isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
-        assert isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
+        assert isclose(f(x1, x1, x2, y1, y2, n), y1)
+        assert isclose(f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 4: Mixed positive and negative values
         x1, x2 = -5, 5
         y1, y2 = -10, 10
-        n = src.main.adjust_n(x1, x2, y1, y2)
+        n = adjust_n(x1, x2, y1, y2)
 
-        assert isclose(src.main.f(x1, x1, x2, y1, y2, n), y1)
-        assert isclose(src.main.f(x2, x1, x2, y1, y2, n), y2)
+        assert isclose(f(x1, x1, x2, y1, y2, n), y1)
+        assert isclose(f(x2, x1, x2, y1, y2, n), y2)
 
         # Test case 5: When y1=y2, function should produce a flat line
         x1, x2 = 0, 10
         y1, y2 = 5, 5
 
-        assert isclose(src.main.f(3, x1, x2, y1, y2, 0), 5)
-        assert isclose(src.main.f(7, x1, x2, y1, y2, 0), 5)
+        assert isclose(f(3, x1, x2, y1, y2, 0), 5)
+        assert isclose(f(7, x1, x2, y1, y2, 0), 5)
 
     def test_newton_raphson(self) -> None:
         # Test Newton-Raphson solver for simple cases
@@ -90,16 +91,16 @@ class TestMainFunctions:
         y1, y2 = 0, 10
 
         # The n value should make f(x1) = y1
-        n = src.main.adjust_n(x1, x2, y1, y2)
-        result = src.main.f(x1, x1, x2, y1, y2, n)
+        n = adjust_n(x1, x2, y1, y2)
+        result = f(x1, x1, x2, y1, y2, n)
 
         assert isclose(result, y1)
 
         # Test with different values
         x1, x2 = 1, 3
         y1, y2 = 5, 15
-        n = src.main.adjust_n(x1, x2, y1, y2)
-        result = src.main.f(x1, x1, x2, y1, y2, n)
+        n = adjust_n(x1, x2, y1, y2)
+        result = f(x1, x1, x2, y1, y2, n)
 
         assert isclose(result, y1)
 
@@ -109,15 +110,13 @@ class TestMainFunctions:
         y1, y2 = 0, 10
 
         with raises(ValueError, match="Newton–Raphson derivative hit zero"):
-            src.main.adjust_n(x1, x2, y1, y2)
+            adjust_n(x1, x2, y1, y2)
 
     def test_interpolate(
         self, sample_points: list[tuple[float, float]]
     ) -> None:
         # Test point interpolation
-        x_interp, y_interp = src.main.interpolate(
-            sample_points, points_per_segment=10
-        )
+        x_interp, y_interp = interpolate(sample_points, points_per_segment=10)
 
         # Check that interpolated arrays have correct length
         expected_length = (len(sample_points) - 1) * 10 + 1
@@ -142,7 +141,7 @@ class TestMainFunctions:
                 data.to_csv(tmp.name, index=False)
 
                 # Test loading with default column names
-                points, x_col, y_col = src.main.load_points_from_csv(tmp.name)
+                points, x_col, y_col = load_points_from_csv(tmp.name)
 
                 assert len(points) == 5
                 assert x_col == "x"
@@ -151,9 +150,7 @@ class TestMainFunctions:
                 assert points[-1] == (4, 1)
 
                 # Test with explicit column names
-                points, x_col, y_col = src.main.load_points_from_csv(
-                    tmp.name, "x", "y"
-                )
+                points, x_col, y_col = load_points_from_csv(tmp.name, "x", "y")
 
                 assert x_col == "x"
                 assert y_col == "y"
@@ -168,7 +165,7 @@ class TestMainFunctions:
         sample_points: list[tuple[float, float]],
     ) -> None:
         # Test graph generation
-        fig = src.main.graph(points=sample_points, config={"show_plot": False})
+        fig = graph(points=sample_points, config={"show_plot": False})
 
         # Check that a figure was created
         assert isinstance(fig, figure.Figure)
@@ -177,7 +174,7 @@ class TestMainFunctions:
         mock_show.assert_not_called()
 
         # Test with show_plot=True
-        fig = src.main.graph(points=sample_points, config={"show_plot": True})
+        fig = graph(points=sample_points, config={"show_plot": True})
         mock_show.assert_called_once()
 
         # Clean up
