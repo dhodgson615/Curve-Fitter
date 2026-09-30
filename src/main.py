@@ -118,7 +118,7 @@ def load_points_from_csv(
 
 
 def graph(
-    pts: Optional[list[tuple[float, float]]] = None,
+    points: Optional[list[tuple[float, float]]] = None,
     config: Optional[dict[str, Any]] = None,
 ) -> Figure:
     """Create a graph from interpolated points"""
@@ -127,8 +127,11 @@ def graph(
     if config:
         cfg.update(config)
 
-    pts = parse_coords(input(cfg["input_prompt"])) if pts is None else pts
-    x, y = interpolate(pts)
+    points = (
+        parse_coords(input(cfg["input_prompt"])) if points is None else points
+    )
+
+    x, y = interpolate(points)
     use(str(cfg["plot_style"]))
     fig = figure(figsize=cfg["figsize"])
 
@@ -142,7 +145,7 @@ def graph(
         alpha=float(cfg["alpha"]),
     )
 
-    x_points, y_points = zip(*pts)
+    x_points, y_points = zip(*points)
 
     scatter(
         x_points,

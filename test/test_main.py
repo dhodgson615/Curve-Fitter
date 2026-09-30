@@ -165,7 +165,7 @@ class TestMainFunctions:
         sample_points: list[tuple[float, float]],
     ) -> None:
         # Test graph generation
-        fig = src.main.graph(pts=sample_points, config={"show_plot": False})
+        fig = src.main.graph(points=sample_points, config={"show_plot":False})
 
         # Check that a figure was created
         assert isinstance(fig, matplotlib.figure.Figure)
@@ -174,7 +174,7 @@ class TestMainFunctions:
         mock_show.assert_not_called()
 
         # Test with show_plot=True
-        fig = src.main.graph(pts=sample_points, config={"show_plot": True})
+        fig = src.main.graph(points=sample_points, config={"show_plot":True})
         mock_show.assert_called_once()
 
         # Clean up
