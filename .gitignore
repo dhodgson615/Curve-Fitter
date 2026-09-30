@@ -125,6 +125,7 @@ logs/
 nosetests.xml
 parts/
 profile_default/
+repomix-output.xml
 sdist/
 share/python-wheels/
 temp/
