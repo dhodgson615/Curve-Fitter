@@ -118,6 +118,7 @@ def interpolate(
     doesn't matter. Each pair of neighboring points contributes
     `points_per_segment` samples, plus one final sample for the last point.
     """
+    assert len(points) >= 2, "At least 2 points are required for interpolation"
     sorted_points: list[Point] = sorted(points)
     curve_points: list[Point] = []
 
