@@ -186,8 +186,8 @@ def graph(
     curve_x: list[float] = [point[0] for point in curve_points]
     curve_y: list[float] = [point[1] for point in curve_points]
 
-    point_xs = [point[0] for point in points]
-    point_ys = [point[1] for point in points]
+    point_xs: list[float] = [point[0] for point in points]
+    point_ys: list[float] = [point[1] for point in points]
 
     plt.style.use(str(settings["plot_style"]))
     fig, ax = plt.subplots(figsize=settings["figsize"])
