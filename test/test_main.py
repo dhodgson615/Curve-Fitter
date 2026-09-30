@@ -1,6 +1,6 @@
 from os import unlink
 from re import findall
-import tempfile
+from tempfile import NamedTemporaryFile
 from unittest import mock
 
 import matplotlib
@@ -139,7 +139,7 @@ class TestMainFunctions:
         # Create a test CSV file
         data = pd.DataFrame({"x": [0, 1, 2, 3, 4], "y": [5, 4, 3, 2, 1]})
 
-        with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
+        with NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
             try:
                 data.to_csv(tmp.name, index=False)
 
