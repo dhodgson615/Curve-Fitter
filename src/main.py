@@ -15,15 +15,13 @@ Run it from the project root (the folder that contains `src/`):
 """
 
 from math import cos, pi, sin
-from typing import Optional, TypeAlias
+from typing import Optional
 
 from pandas import DataFrame, read_csv
 
 from config import INTERPOLATION_CONFIG
 from src.graphing import graph
-
-# A point is an (x, y) pair.
-Point: TypeAlias = tuple[float, float]
+from src.types import Point
 
 # Matches "(x, y)" pairs in text like "(1, 2), (3.5, -4)" and captures x and y.
 COORDINATE_REGEX: str = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
