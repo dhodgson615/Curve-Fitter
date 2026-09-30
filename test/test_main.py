@@ -178,7 +178,7 @@ class TestMainFunctions:
         mock_show.assert_not_called()
 
         # Test with show_plot=True
-        fig = src.main.graph(points=sample_points, config={"show_plot":True})
+        fig = src.main.graph(points=sample_points, config={"show_plot": True})
         mock_show.assert_called_once()
 
         # Clean up
