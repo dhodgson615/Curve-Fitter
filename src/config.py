@@ -1,7 +1,7 @@
 """Settings for the half-sine interpolation project"""
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Union
 
 # The folder that contains `src/` and `data/`. Found relative to this file so
 # paths work no matter which directory you run Python from.
