@@ -178,7 +178,7 @@ def graph(
     """
     settings: dict[
         str,
-        Union[str, tuple[float, float], float, bool, int, None],
+        Union[str, Point, float, bool, int, None],
     ] = {
         **PLOT_CONFIG,
         **(config or {}),
