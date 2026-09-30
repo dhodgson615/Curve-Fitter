@@ -176,7 +176,14 @@ def graph(
     `config`  settings that override the defaults in ``PLOT_CONFIG`` (see
               config.py for every option).
     """
-    settings = {**PLOT_CONFIG, **(config or {})}
+    settings: dict[
+        str,
+        Union[str, tuple[float, float], float, bool, int, None],
+    ] = {
+        **PLOT_CONFIG,
+        **(config or {}),
+    }  # TODO: refactor this so that the individual labels are sourced from the
+    #          appropriate configuration fields
 
     if points is None:
         points = parse_coords(input(settings["input_prompt"]))
