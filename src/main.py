@@ -16,7 +16,7 @@ Run it from the project root (the folder that contains `src/`):
 
 from math import cos, pi, sin
 from re import findall
-from typing import Any, Optional, TypeAlias
+from typing import Any, Optional, TypeAlias, Union
 
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -197,9 +197,9 @@ def graph(
     point_ys: list[float] = [point[1] for point in points]
 
     plt.style.use(str(settings["plot_style"]))
-    fig, ax = plt.subplots(figsize=settings["figsize"])
+    figure, axes = plt.subplots(figsize=settings["figsize"])
 
-    ax.plot(
+    axes.plot(
         curve_x,
         curve_y,
         label=str(settings["curve_label"]),
@@ -209,7 +209,7 @@ def graph(
         alpha=float(settings["alpha"]),
     )
 
-    ax.scatter(
+    axes.scatter(
         point_xs,
         point_ys,
         label=str(settings["point_label"]),
@@ -218,21 +218,21 @@ def graph(
         alpha=float(settings["alpha"]),
     )
 
-    ax.set_title(settings["graph_title"])
+    axes.set_title(settings["graph_title"])
 
     if settings["x_label"]:
-        ax.set_xlabel(settings["x_label"])
+        axes.set_xlabel(settings["x_label"])
 
     if settings["y_label"]:
-        ax.set_ylabel(settings["y_label"])
+        axes.set_ylabel(settings["y_label"])
 
-    ax.legend()
-    ax.grid(settings["show_grid"])
+    axes.legend()
+    axes.grid(settings["show_grid"])
 
     if settings["show_plot"]:
         plt.show()
 
-    return fig
+    return figure
 
 
 def main() -> None:
