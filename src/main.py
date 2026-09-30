@@ -114,7 +114,7 @@ def find_phase_shift(
 
 
 def interpolate(
-    points: list[tuple[float, float]],
+    points: list[Point],
     points_per_segment: int = DEFAULT_POINTS_PER_SEGMENT,
 ) -> list[Point]:
     """Compute a smooth curve through `points`.
