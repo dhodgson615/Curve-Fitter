@@ -16,7 +16,7 @@ Run it from the project root (the folder that contains `src/`):
 
 from math import cos, pi, sin
 from re import findall
-from typing import Any, Optional
+from typing import Any, Optional, TypeAlias
 
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -25,7 +25,7 @@ from pandas import DataFrame, read_csv
 from config import INTERPOLATION_CONFIG, PLOT_CONFIG
 
 # A point is an (x, y) pair.
-Point: type[tuple[float, float]] = tuple[float, float]
+Point: TypeAlias = tuple[float, float]
 
 # Matches "(x, y)" pairs in text like "(1, 2), (3.5, -4)" and captures x and y.
 COORDINATE_REGEX: str = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
@@ -126,6 +126,11 @@ def interpolate(
     """
     sorted_points: list[Point] = sorted(points)
     curve_points: list[Point] = []
+
+    x1: float
+    y1: float
+    x2: float
+    y2: float
 
     for (x1, y1), (x2, y2) in zip(sorted_points, sorted_points[1:]):
         n: float = find_phase_shift(x1, x2, y1, y2)  # once per segment
