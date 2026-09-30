@@ -180,7 +180,8 @@ def graph(
     if points is None:
         points = parse_coords(input(settings["input_prompt"]))
 
-    curve_x, curve_y = interpolate(points)
+    curve_points = interpolate(points)
+    curve_x, curve_y = zip(*curve_points)
     point_xs, point_ys = zip(*points)
 
     plt.style.use(str(settings["plot_style"]))
