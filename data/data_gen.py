@@ -21,7 +21,7 @@ def _rand_pts(period_hours: float, num_points: int) -> NDArray[float64]:
     )
 
 
-def _make_day_segs(period_hours: float) -> dict[str, tuple[float, float]]:
+def _make_day_segments(period_hours: float) -> dict[str, tuple[float, float]]:
     return {
         key: (
             (value[0] * (period_hours / 24), value[1] * (period_hours / 24))
@@ -38,45 +38,48 @@ def _make_day_segs(period_hours: float) -> dict[str, tuple[float, float]]:
 
 
 def _get_pts_per_seg(
-    day_segs: dict[str, tuple[float, float]],
+    day_segments: dict[str, tuple[float, float]],
     weights: dict[str, float],
     num_points: int,
 ) -> dict[str, int]:
-    pts_per_seg = {
-        seg: max(1, int(weights.get(seg, 0) * num_points)) for seg in day_segs
+    points_per_segment = {
+        segment: max(1, int(weights.get(segment, 0) * num_points))
+        for segment in day_segments
     }
 
-    diff = num_points - sum(pts_per_seg.values())
+    diff = num_points - sum(points_per_segment.values())
 
     if diff != 0:
-        keys = list(pts_per_seg.keys())
+        keys = list(points_per_segment.keys())
 
         for i in range(abs(diff)):
-            pts_per_seg[keys[i % len(keys)]] += 1 if diff > 0 else -1
+            points_per_segment[keys[i % len(keys)]] += 1 if diff > 0 else -1
 
-    return pts_per_seg
+    return points_per_segment
 
 
-def _weighted_pts(period_hours: float, n_pts: int) -> NDArray[float64]:
+def _weighted_pts(period_hours: float, n_points: int) -> NDArray[float64]:
     return array(
         sorted(
             [
                 float(x)
-                for segs in [_make_day_segs(period_hours)]
-                for pts_per_seg in [
+                for segments in [_make_day_segments(period_hours)]
+                for points_per_segment in [
                     _get_pts_per_seg(
-                        segs,
+                        segments,
                         {
                             "early_morning": 0.15,
                             "morning": 0.3,
                             "afternoon": 0.3,
                             "night": 0.25,
                         },
-                        n_pts,
+                        n_points,
                     )
                 ]
-                for seg, (start, end) in segs.items()
-                for x in sorted(uniform(start, end, pts_per_seg.get(seg, 0)))
+                for segment, (start, end) in segments.items()
+                for x in sorted(
+                    uniform(start, end, points_per_segment.get(segment, 0))
+                )
             ]
         ),
         dtype=float64,
