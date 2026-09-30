@@ -23,11 +23,14 @@ try:
 except ImportError:
     from config import INTERPOLATION_CONFIG, PLOT_CONFIG
 
-COORD_REGEX = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
+COORDINATE_REGEX = r"\(\s*([^,]+)\s*,\s*([^)]+)\s*\)"
 
 
-def parse_coords(s: str) -> list[tuple[float, float]]:
-    return [(float(x), float(y)) for x, y in findall(COORD_REGEX, s)]
+def parse_coords(coordinate_string: str) -> list[tuple[float, float]]:
+    return [
+        (float(x), float(y))
+        for x, y in findall(COORDINATE_REGEX, coordinate_string)
+    ]
 
 
 def f(x: float, x1: float, x2: float, y1: float, y2: float, n: float) -> float:

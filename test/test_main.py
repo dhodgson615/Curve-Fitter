@@ -39,7 +39,7 @@ class TestMainFunctions:
         ]
 
         # Test regex pattern directly
-        matches = re.findall(src.main.COORD_REGEX, "(1, 2), (3, 4)")
+        matches = re.findall(src.main.COORDINATE_REGEX, "(1, 2), (3, 4)")
 
         assert matches == [("1", "2"), ("3", "4")]
 
