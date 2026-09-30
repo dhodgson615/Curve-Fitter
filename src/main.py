@@ -126,7 +126,10 @@ def interpolate(
     x2: float
     y2: float
 
-    for (x1, y1), (x2, y2) in zip(sorted_points, sorted_points[1:]):
+    for i in range(len(sorted_points) - 1):
+        x1, y1 = sorted_points[i]
+        x2, y2 = sorted_points[i + 1]
+
         n: float = find_phase_shift(x1, x2, y1, y2)  # once per segment
         step: float = (x2 - x1) / points_per_segment
 
