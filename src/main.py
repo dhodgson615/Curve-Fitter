@@ -155,6 +155,7 @@ def load_points_from_csv(
     along with the column names used (handy for axis labels).
     """
     df: DataFrame = read_csv(filename)
+    assert len(df.columns) >= 2, "CSV file must contain at least two columns"
     x_column = x_column or str(df.columns[0])
     y_column = y_column or str(df.columns[1])
 
