@@ -181,7 +181,7 @@ def graph(
     if points is None:
         points = parse_coords(input(settings["input_prompt"]))
 
-    curve_points = interpolate(points)
+    curve_points: list[Point] = interpolate(points)
 
     curve_x = [point[0] for point in curve_points]
     curve_y = [point[1] for point in curve_points]
