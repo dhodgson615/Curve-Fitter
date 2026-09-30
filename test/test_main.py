@@ -1,4 +1,4 @@
-import os
+from os import unlink
 import re
 import tempfile
 from unittest import mock
@@ -161,7 +161,7 @@ class TestMainFunctions:
                 assert y_col == "y"
 
             finally:
-                os.unlink(tmp.name)
+                unlink(tmp.name)
 
     @mock.patch("matplotlib.pyplot.show")
     def test_graph(
