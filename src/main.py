@@ -65,8 +65,7 @@ def half_sine(
     `n` slides the wave sideways. Use `find_phase_shift` to get the `n`
     that makes the curve pass through both end points.
     """
-    width: float = x2 - x1
-    phase: float = pi * (x - x2 - n) / width
+    phase: float = pi * (x - x2 - n) / (x2 - x1)
     return (y1 + y2 + (y2 - y1) * sin(phase)) / 2
 
 
