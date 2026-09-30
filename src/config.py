@@ -10,7 +10,7 @@ from src.main import Point
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Where `data/data_gen.py` writes its CSV of generated data.
-CSV_FILE = str(PROJECT_ROOT / "data" / "data_points.csv")
+CSV_FILE: str = str(PROJECT_ROOT / "data" / "data_points.csv")
 
 # A small hand-picked data set, as (x, y) pairs.
 SAMPLE_POINTS: list[Point] = [(0, 5), (2, 0), (4, 10), (6, 5), (8, 0)]
