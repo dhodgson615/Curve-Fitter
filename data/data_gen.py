@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from typing import Optional
+from typing import Any, Optional, Union
 
 from numpy import array, float64, linspace, pi, sin
 from numpy.random import normal, seed, uniform
