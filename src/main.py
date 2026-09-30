@@ -102,19 +102,19 @@ def interpolate(
 
 def load_points_from_csv(
     filename: str,
-    x_col: Optional[str] = None,
-    y_col: Optional[str] = None,
+    x_column: Optional[str] = None,
+    y_column: Optional[str] = None,
 ) -> tuple[list[tuple[float, float]], str, str]:
     """Load points from a CSV file"""
     df = read_csv(filename)
-    x_col = x_col or df.columns[0]
-    y_col = y_col or df.columns[1]
+    x_column = x_column or df.columns[0]
+    y_column = y_column or df.columns[1]
 
     points: list[tuple[float, float]] = [
-        (float(x), float(y)) for x, y in zip(df[x_col], df[y_col])
+        (float(x), float(y)) for x, y in zip(df[x_column], df[y_column])
     ]
 
-    return points, x_col, y_col
+    return points, x_column, y_column
 
 
 def graph(
