@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from typing import Any, Optional, Union
 
-from numpy import array, float64, linspace, pi, sin
+from numpy import array, dtype, float64, generic, linspace, ndarray, pi, sin
 from numpy.random import normal, seed, uniform
 from numpy.typing import NDArray
 from pandas import DataFrame
