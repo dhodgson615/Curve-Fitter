@@ -4,7 +4,7 @@ from tempfile import NamedTemporaryFile
 from unittest import mock
 
 import matplotlib
-import matplotlib.pyplot
+from matplotlib.pyplot import close
 import numpy
 from pandas import DataFrame
 from pytest import fixture, raises
@@ -181,4 +181,4 @@ class TestMainFunctions:
         mock_show.assert_called_once()
 
         # Clean up
-        matplotlib.pyplot.close(fig)
+        close(fig)
