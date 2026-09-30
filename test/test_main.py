@@ -116,9 +116,7 @@ class TestMainFunctions:
         self, sample_points: list[tuple[float, float]]
     ) -> None:
         # Test point interpolation
-        x_interp, y_interp = src.main.interpolate(
-            sample_points, pts_per_seg=10
-        )
+        x_interp, y_interp = src.main.interpolate(sample_points, points_per_segment=10)
 
         # Check that interpolated arrays have correct length
         expected_length = (len(sample_points) - 1) * 10 + 1

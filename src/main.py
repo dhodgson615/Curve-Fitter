@@ -7,8 +7,17 @@ from sys import path
 from typing import Any, Optional
 
 from matplotlib.figure import Figure
-from matplotlib.pyplot import (figure, grid, legend, plot, scatter, show,
-                               title, xlabel, ylabel)
+from matplotlib.pyplot import (
+    figure,
+    grid,
+    legend,
+    plot,
+    scatter,
+    show,
+    title,
+    xlabel,
+    ylabel,
+)
 from matplotlib.pyplot.style import use
 from pandas import read_csv
 
@@ -66,24 +75,28 @@ def adjust_n(
 
 
 def interpolate(
-    pts: list[tuple[float, float]],
-    pts_per_seg: int = int(INTERPOLATION_CONFIG["points_per_segment"]),
+    points: list[tuple[float, float]],
+    points_per_segment: int = int(INTERPOLATION_CONFIG["points_per_segment"]),
 ) -> tuple[list[float], list[float]]:
     """Interpolate a smooth curve through the given points."""
     return (
         [
-            (x1 + (x2 - x1) / pts_per_seg * j)
-            for (x1, y1), (x2, y2) in list(zip(sorted(pts), sorted(pts)[1:]))
-            for j in range(pts_per_seg)
+            (x1 + (x2 - x1) / points_per_segment * j)
+            for (x1, y1), (x2, y2) in list(
+                zip(sorted(points), sorted(points)[1:])
+            )
+            for j in range(points_per_segment)
         ]
-        + [float(pts[-1][0])],
+        + [float(points[-1][0])],
         [
-            f((x1 + (x2 - x1) / pts_per_seg * j), x1, x2, y1, y2, n)
-            for (x1, y1), (x2, y2) in list(zip(sorted(pts), sorted(pts)[1:]))
+            f((x1 + (x2 - x1) / points_per_segment * j), x1, x2, y1, y2, n)
+            for (x1, y1), (x2, y2) in list(
+                zip(sorted(points), sorted(points)[1:])
+            )
             for n in [adjust_n(x1, x2, y1, y2)]
-            for j in range(pts_per_seg)
+            for j in range(points_per_segment)
         ]
-        + [float(pts[-1][1])],
+        + [float(points[-1][1])],
     )
 
 
