@@ -1,9 +1,9 @@
 """Settings for the half-sine interpolation project"""
 
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Optional, Union
 
-from src.types import Point
+from models import Point
 
 # The folder that contains `src/` and `data/`. Found relative to this file so
 # paths work no matter which directory you run Python from.
@@ -28,7 +28,7 @@ INTERPOLATION_CONFIG: dict[str, Union[int, float]] = {
 
 # Defaults used for every plot.
 PLOT_CONFIG: dict[
-    str, Union[str, tuple[float, float], float, bool, int, None]
+    str, Optional[Union[str, tuple[float, float], float, bool, int]]
 ] = {
     "plot_style": "dark_background",  # any matplotlib style name
     "figsize": (10.0, 6.0),  # (width, height) in inches

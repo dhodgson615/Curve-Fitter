@@ -3,10 +3,10 @@ from typing import Any, Optional, Union
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
-from src.config import PLOT_CONFIG
-from src.main import interpolate
-from src.types import Point
-from src.utils import parse_coords
+from config import PLOT_CONFIG
+from lib import interpolate
+from models import Point
+from utils import parse_coords
 
 
 def graph(

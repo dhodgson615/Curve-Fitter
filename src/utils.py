@@ -1,7 +1,7 @@
 from re import findall
 
-from main import COORDINATE_REGEX
-from src.types import Point
+from lib import COORDINATE_REGEX
+from models import Point
 
 
 def parse_coords(coordinate_string: str) -> list[Point]:
