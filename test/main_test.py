@@ -1,7 +1,7 @@
 """Tests for the main module."""
 
 from math import isclose
-from os import path, remove
+from os import path, remove  # TODO: Use pathlib.Path instead of os.path
 from tempfile import NamedTemporaryFile
 from typing import TypeAlias
 
